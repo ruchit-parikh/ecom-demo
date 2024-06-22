@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+    workspace:
+        build:
+            context: ./docker/php-apache
+            target: workspace
+            args:
+                - INSTALL_XDEBUG=true
+        working_dir: /var/www/html
+        container_name: ecom-workspace
+        ports:
+            - "8000:80"
+        environment:
+            - TZ=Europe/Zagreb
+            - PHP_IDE_CONFIG=serverName=ecom-docker
+        volumes:
+            - .:/var/www/html
+            - ./docker/php-apache/php-docker.ini:/usr/local/etc/php/conf.d/php-docker.ini
+            - ./docker/php-apache/sites-enabled:/etc/apache2/sites-enabled
+            - /var/run/docker.sock:/var/run/docker.sock
+        depends_on:
+            - mysql
+        networks:
+            - ecom-network
+
+    mysql:
+        image: mysql:8
+        container_name: ecom-mysql
+        ports:
+            - "1027:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=smile
+            - MYSQL_DATABASE=ecom_demo
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - TZ=Europe/Zagreb
+        volumes:
+            - ecom-mysql-data:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+            - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        networks:
+            - ecom-network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: ecom-phpmyadmin
+        ports:
+            - "8080:80"
+        environment:
+            - PMA_HOST=mysql
+            - UPLOAD_LIMIT=300M
+        volumes:
+            - ecom-phpmyadmin-data:/var/www/phpmyadmin
+        depends_on:
+            - mysql
+        networks:
+            - ecom-network
+
+volumes:
+    ecom-mysql-data:
+    ecom-phpmyadmin-data:
+
+networks:
+    ecom-network:
+        driver: bridge
