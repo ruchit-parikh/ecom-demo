@@ -14,3 +14,5 @@ As we are setting up environment through docker, you will need it installed.
 - To run tests you will need to setup test environment, run bash script `test.sh` to set it up
 - In order to update with latest migrations and dependencies, run bash script `update.sh` and make sure to update relevant env files if needed
 - For developers, you can update relevant xdebug.ini, php-docker.ini and my.cnf for updating mounted ini files in docker as per your need
+- You can also run laravel pint, phpstan, and ide helper generator using their commands mentioned on their official docs
+- For api documents, you will need to refer `api.docs.json` in root folder's public/docs directory
