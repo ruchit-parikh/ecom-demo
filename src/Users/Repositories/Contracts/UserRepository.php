@@ -12,4 +12,11 @@ interface UserRepository
      * @return User
      */
     public function findByUuid(string $uuid): User;
+
+    /**
+     * @param array $data
+     *
+     * @return User
+     */
+    public function create(array $data): User;
 }

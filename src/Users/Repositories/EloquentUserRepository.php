@@ -4,6 +4,7 @@ namespace EcomDemo\Users\Repositories;
 
 use EcomDemo\Users\Entities\User;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
+use Hash;
 
 class EloquentUserRepository implements UserRepository
 {
@@ -16,5 +17,24 @@ class EloquentUserRepository implements UserRepository
         $user = User::where('uuid', $uuid)->first();
 
         return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function create(array $data): User
+    {
+        $user = new User([
+            'first_name'   => $data['first_name'],
+            'last_name'    => $data['last_name'],
+            'email'        => $data['email'],
+            'password'     => Hash::make($data['password']),
+            'address'      => $data['address'],
+            'phone_number' => $data['phone_number']
+        ]);
+
+        $user->save();
+
+        return $user->refresh();
     }
 }
