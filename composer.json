@@ -7,7 +7,9 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "lcobucci/clock": "^3.2",
+        "lcobucci/jwt": "^5.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",
@@ -22,6 +24,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "EcomDemo\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     mariadb-client \
     libmariadb-dev \
     docker.io \
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install the xdebug extension if INSTALL_XDEBUG is true, you can set on docker-compose.yml
