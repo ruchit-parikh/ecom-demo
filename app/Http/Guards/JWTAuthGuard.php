@@ -18,9 +18,9 @@ class JWTAuthGuard implements Guard
     protected Request $request;
 
     /**
-     * @var UserProvider
+     * @var UserProvider|null
      */
-    protected UserProvider $provider;
+    protected ?UserProvider $provider;
 
     /**
      * @var Authenticatable|null
@@ -28,10 +28,10 @@ class JWTAuthGuard implements Guard
     protected ?Authenticatable $user = null;
 
     /**
-     * @param UserProvider $provider
+     * @param UserProvider|null $provider
      * @param Request $request
      */
-    public function __construct(UserProvider $provider, Request $request)
+    public function __construct(?UserProvider $provider, Request $request)
     {
         $this->provider = $provider;
         $this->request  = $request;
@@ -102,7 +102,9 @@ class JWTAuthGuard implements Guard
     }
 
     /**
-     * @inheritDoc
+     * @param array<string, string> $credentials
+     *
+     * @return bool
      */
     public function validate(array $credentials = []): bool
     {
