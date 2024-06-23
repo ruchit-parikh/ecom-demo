@@ -3,7 +3,8 @@ version: '3.9'
 services:
     workspace:
         build:
-            context: ./docker/php-apache
+            context: .
+            dockerfile: docker/php-apache/Dockerfile
             target: workspace
             args:
                 - INSTALL_XDEBUG=true
@@ -11,12 +12,15 @@ services:
         container_name: ecom-workspace
         ports:
             - "8000:80"
+        extra_hosts: # Only needed for linux machine
+            - host.docker.internal:host-gateway
         environment:
             - TZ=Europe/Zagreb
             - PHP_IDE_CONFIG=serverName=ecom-docker
         volumes:
             - .:/var/www/html
             - ./docker/php-apache/php-docker.ini:/usr/local/etc/php/conf.d/php-docker.ini
+            - ./docker/php-apache/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./docker/php-apache/sites-enabled:/etc/apache2/sites-enabled
             - /var/run/docker.sock:/var/run/docker.sock
         depends_on:

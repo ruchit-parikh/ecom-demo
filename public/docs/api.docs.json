@@ -1,0 +1,29 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pet Shop API",
+        "description": "This api gives information of endpoints which are created for for this demo ecommerce project",
+        "version": "1.0.0"
+    },
+    "paths": {
+
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+}
