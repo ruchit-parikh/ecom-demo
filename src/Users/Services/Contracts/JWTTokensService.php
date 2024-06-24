@@ -2,36 +2,21 @@
 
 namespace EcomDemo\Users\Services\Contracts;
 
-use Carbon\Carbon;
-
 interface JWTTokensService
 {
     /**
      * @param string $uuid
      * @param string $tokenName
      *
-     * @return string
+     * @return JWTToken
      */
-    public function getFreshTokenFor(string $uuid, string $tokenName): string;
+    public function getFreshTokenFor(string $uuid, string $tokenName): JWTToken;
 
     /**
      * @param string $jwtToken
+     * @param string $tokenName
      *
-     * @return string
+     * @return JWTToken|null
      */
-    public function getClaimFrom(string $jwtToken): string;
-
-    /**
-     * @param string $jwtToken
-     *
-     * @return bool
-     */
-    public function validate(string $jwtToken): bool;
-
-    /**
-     * @param string $jwtToken
-     *
-     * @return Carbon|null
-     */
-    public function getExpiry(string $jwtToken): ?Carbon;
+    public function parse(string $jwtToken, string $tokenName): ?JWTToken;
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Guards;
 
-use EcomDemo\Users\Repositories\Contracts\JWTTokensRepository;
-use EcomDemo\Users\Services\Contracts\JWTTokensService;
 use EcomDemo\Users\Services\TokensManager;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -58,30 +56,22 @@ class JWTAuthGuard implements Guard
      */
     public function user(): ?Authenticatable
     {
-        /** @var JWTTokensService $tokensService */
-        $tokensService = app(JWTTokensService::class);
-
         if (!is_null($this->user)) {
             return $this->user;
-        }
-
-        $jwtToken = $this->request->bearerToken();
-
-        if (!$jwtToken || !$tokensService->validate($jwtToken)) {
-            return null;
         }
 
         /** @var TokensManager $tokensManager */
         $tokensManager = app(TokensManager::class);
 
-        /** @var JWTTokensRepository $tokensRepository */
-        $tokensRepository = app(JWTTokensRepository::class);
+        $jwtToken = $this->request->bearerToken();
+
+        if (!$jwtToken || !$tokensManager->validate($jwtToken)) {
+            return null;
+        }
 
         try {
             // TODO: Refactor this so that JWT guard is independent from user, rather it can be any \Illuminate\Contracts\Auth\Authenticatable
             $this->user = $tokensManager->getUserFrom($jwtToken);
-
-            $tokensRepository->touch($jwtToken);
         } catch (\Exception $e) {
             return null;
         }

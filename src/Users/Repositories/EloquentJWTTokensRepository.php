@@ -4,23 +4,36 @@ namespace EcomDemo\Users\Repositories;
 
 use Carbon\Carbon;
 use EcomDemo\Users\Entities\JWTToken;
+use EcomDemo\Users\Entities\User;
 use EcomDemo\Users\Repositories\Contracts\JWTTokensRepository;
+use EcomDemo\Users\Services\Contracts\JWTToken as JWTTokenContract;
 
 class EloquentJWTTokensRepository implements JWTTokensRepository
 {
     /**
      * @inheritDoc
      */
-    public function store(string $token, int $userId, string $tokenName, ?Carbon $expiresAt = null): JWTToken
+    public function findByUUid(JWTTokenContract $token): ?JWTToken
+    {
+        /** @var JWTToken  $tokenInDb */
+        $tokenInDb = JWTToken::where('unique_id', $token->getUuid())->first();
+
+        return $tokenInDb;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function store(User $user, JWTTokenContract $token): JWTToken
     {
         $token = new JWTToken([
-            'user_id'     => $userId,
-            'unique_id'   => $token,
-            'token_title' => $tokenName,
-            'expires_at'  => $expiresAt
+            'user_id'     => $user->getKey(),
+            'unique_id'   => $token->getUuid(),
+            'token_title' => $token->getType(),
+            'expires_at'  => $token->getExpiresAt(),
         ]);
 
-        $token->store();
+        $token->save();
 
         return $token->refresh();
     }
@@ -28,13 +41,28 @@ class EloquentJWTTokensRepository implements JWTTokensRepository
     /**
      * @inheritDoc
      */
-    public function touch(string $token): JWTToken
+    public function touch(JWTTokenContract $token): JWTToken
     {
-        /** @var JWTToken $token */
-        $token = JWTToken::where('unique_ID', $token)->first();
+        /** @var JWTToken $tokenInDb */
+        $tokenInDb = JWTToken::where('unique_id', $token->getUuid())->firstOrFail();
 
-        $token->touch('last_used_at');
+        $tokenInDb->touch('last_used_at');
 
-        return $token->refresh();
+        return $tokenInDb->refresh();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function expire(JWTTokenContract $token): JWTToken
+    {
+        /** @var JWTToken $tokenInDb */
+        $tokenInDb = JWTToken::where('unique_id', $token->getUuid())->firstOrFail();
+
+        $tokenInDb->setExpiry(Carbon::now());
+
+        $tokenInDb->save();
+
+        return $tokenInDb->refresh();
     }
 }

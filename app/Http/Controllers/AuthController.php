@@ -6,6 +6,7 @@ use App\Http\Requests\LoginFormRequest;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
 use EcomDemo\Users\Services\TokensManager;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -46,5 +47,17 @@ class AuthController extends Controller
         $tokens = $this->tokensManager->generateForUser($user);
 
         return response()->json($tokens);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $this->tokensManager->invalidate($request->bearerToken());
+
+        return response()->json(['message' => 'You are logged out successfully']);
     }
 }

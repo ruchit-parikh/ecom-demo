@@ -11,6 +11,8 @@ Route::namespace('\App\Http\Controllers')->group(function() {
         Route::middleware(['customer'])->namespace('Customers')->group(function() {
             // Setup customer endpoints
         });
+
+        Route::post('/user/logout', 'AuthController@logout');
     });
 
     Route::post('/user/login', 'AuthController@login');

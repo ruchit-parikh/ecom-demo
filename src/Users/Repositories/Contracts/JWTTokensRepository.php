@@ -2,25 +2,38 @@
 
 namespace EcomDemo\Users\Repositories\Contracts;
 
-use Carbon\Carbon;
 use EcomDemo\Users\Entities\JWTToken;
+use EcomDemo\Users\Entities\User;
+use EcomDemo\Users\Services\Contracts\JWTToken as JWTTokenContract;
 
 interface JWTTokensRepository
 {
     /**
-     * @param string $token
-     * @param int $userId
-     * @param string $tokenName
-     * @param Carbon|null $expiresAt
+     * @param JWTTokenContract $token
      *
-     * @return JWTToken
+     * @return JWTToken|null
      */
-    public function store(string $token, int $userId, string $tokenName, ?Carbon $expiresAt = null): JWTToken;
+    public function findByUUid(JWTTokenContract $token): ?JWTToken;
 
     /**
-     * @param string $token
+     * @param User $user
+     * @param JWTTokenContract $token
      *
      * @return JWTToken
      */
-    public function touch(string $token): JWTToken;
+    public function store(User $user, JWTTokenContract $token): JWTToken;
+
+    /**
+     * @param JWTTokenContract $token
+     *
+     * @return JWTToken
+     */
+    public function touch(JWTTokenContract $token): JWTToken;
+
+    /**
+     * @param JWTTokenContract $token
+     *
+     * @return JWTToken
+     */
+    public function expire(JWTTokenContract $token): JWTToken;
 }
