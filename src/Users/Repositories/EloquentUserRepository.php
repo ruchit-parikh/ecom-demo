@@ -11,10 +11,21 @@ class EloquentUserRepository implements UserRepository
     /**
      * @inheritDoc
      */
-    public function findByUuid(string $uuid): User
+    public function findByUuid(string $uuid): ?User
     {
         /** @var User $user */
         $user = User::where('uuid', $uuid)->first();
+
+        return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findByEmail(string $email): ?User
+    {
+        /** @var User $user */
+        $user = User::where('email', $email)->first();
 
         return $user;
     }

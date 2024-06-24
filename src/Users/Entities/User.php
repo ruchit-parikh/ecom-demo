@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Str;
 
 /**
@@ -79,5 +80,23 @@ class User extends Authenticatable
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    /**
+     * @param string|null $password
+     *
+     * @return bool
+     */
+    public function isPasswordValid(?string $password): bool
+    {
+        return Hash::check($password, $this->password);
     }
 }

@@ -9,9 +9,16 @@ interface UserRepository
     /**
      * @param string $uuid
      *
-     * @return User
+     * @return User|null
      */
-    public function findByUuid(string $uuid): User;
+    public function findByUuid(string $uuid): ?User;
+
+    /**
+     * @param string $email
+     *
+     * @return User|null
+     */
+    public function findByEmail(string $email): ?User;
 
     /**
      * @param array $data
