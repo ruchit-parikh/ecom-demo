@@ -11,7 +11,7 @@ As we are setting up environment through docker, you will need it installed.
 - Clone this project from git
 - Run command `docker-compose up -d` to start server on linux. Your server will be started on `localhost:8000` and phpmyadmin on `localhost:8080`
 - Run bash script `setup.sh` from root directory. On linux machine you can do it using `sh ./setup.sh` to setup and seed database and download dependencies
-- To run tests you will need to setup test environment, run bash script `test.sh` to set it up
+- To run tests you will need to setup test environment, run bash script `test.sh` to set it up and make sure to specify environment `testing` while running them
 - In order to update with latest migrations and dependencies, run bash script `update.sh` and make sure to update relevant env files if needed
 - For developers, you can update relevant xdebug.ini, php-docker.ini and my.cnf for updating mounted ini files in docker as per your need
 - You can also run laravel pint, phpstan, and ide helper generator using their commands mentioned on their official docs
