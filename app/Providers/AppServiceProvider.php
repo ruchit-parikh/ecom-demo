@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Http\Guards\JWTAuthGuard;
+use EcomDemo\Orders\Repositories\Contracts\OrderRepository;
+use EcomDemo\Orders\Repositories\EloquentOrderRepository;
 use EcomDemo\Users\Repositories\Contracts\JWTTokensRepository;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
 use EcomDemo\Users\Repositories\EloquentJWTTokensRepository;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(JWTTokensRepository::class, EloquentJWTTokensRepository::class);
+        $this->app->bind(OrderRepository::class, EloquentOrderRepository::class);
 
         $this->app->bind(JWTTokensService::class, function ($app) {
             return new LcobucciJWTTokensService(storage_path('keys/private_key.pem'), storage_path('keys/public_key.pem'), config('jwt.pass_phrase'));

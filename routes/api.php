@@ -14,6 +14,7 @@ Route::namespace('\App\Http\Controllers')->group(function() {
 
         Route::post('/user/logout', 'AuthController@logout');
 
+        Route::get('/user/orders', 'UserController@getOrders');
         Route::put('/user/edit', 'UserController@edit');
         Route::get('/user', 'UserController@show');
         Route::delete('/user', 'UserController@deleteAccount');
