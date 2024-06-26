@@ -16,4 +16,6 @@ echo "RSA keys for jwt token generated successfully!"
 
 docker-compose exec workspace bash -c "php artisan cache:clear"
 docker-compose exec workspace bash -c "php artisan route:clear"
+
+# This will be only needed if not setup
 docker-compose exec workspace bash -c "php artisan storage:link"
