@@ -13,6 +13,10 @@ Route::namespace('\App\Http\Controllers')->group(function() {
         });
 
         Route::post('/user/logout', 'AuthController@logout');
+
+        Route::put('/user/edit', 'UserController@edit');
+        Route::get('/user', 'UserController@show');
+        Route::delete('/user', 'UserController@deleteAccount');
     });
 
     Route::post('/user/reset-password-token', 'AuthController@resetPassword');

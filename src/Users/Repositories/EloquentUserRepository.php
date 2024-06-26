@@ -60,6 +60,44 @@ class EloquentUserRepository implements UserRepository
     /**
      * @inheritDoc
      */
+    public function update(User $user, array $data): User
+    {
+        if (!empty($data['first_name'])) {
+            $user->setFirstName($data['first_name']);
+        }
+
+        if (!empty($data['last_name'])) {
+            $user->setLastName($data['last_name']);
+        }
+
+        if (!empty($data['email'])) {
+            $user->setEmail($data['email']);
+        }
+
+        if (!empty($data['address'])) {
+            $user->setAddress($data['address']);
+        }
+
+        if (!empty($data['phone_number'])) {
+            $user->setPhoneNumber($data['phone_number']);
+        }
+
+        if (isset($data['is_marketing'])) {
+            $user->setMarketingPreference($data['is_marketing']);
+        }
+
+        if (!empty($data['avatar'])) {
+            $user->setAvatarUuid($data['avatar']);
+        }
+
+        $user->save();
+
+        return $user->refresh();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function refreshLastLoggedIn(User $user): User
     {
         $user->refreshLastLoggedIn();
@@ -67,6 +105,20 @@ class EloquentUserRepository implements UserRepository
         $user->save();
 
         return $user->refresh();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(User $user): void
+    {
+        $avatar = $user->getAvatar();
+
+        $user->delete();
+
+        if (!is_null($avatar)) {
+            $avatar->delete();
+        }
     }
 
     /**

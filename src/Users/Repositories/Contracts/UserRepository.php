@@ -29,10 +29,23 @@ interface UserRepository
 
     /**
      * @param User $user
+     * @param array $data
+     *
+     * @return User
+     */
+    public function update(User $user, array $data): User;
+
+    /**
+     * @param User $user
      *
      * @return User
      */
     public function refreshLastLoggedIn(User $user): User;
+
+    /**
+     * @param User $user
+     */
+    public function delete(User $user): void;
 
     /**
      * @param string $email

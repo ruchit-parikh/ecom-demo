@@ -4,6 +4,7 @@ namespace EcomDemo\Files\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Str;
 
 /**
@@ -25,5 +26,58 @@ class File extends Model
         static::creating(function ($file) {
             $file->uuid = Str::orderedUuid();
         });
+
+        static::deleting(function ($file) {
+            /** @var File $file */
+            Storage::delete($file->getPath());
+        });
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicPath(): string
+    {
+        return asset(sprintf('storage/%s', $this->path));
     }
 }

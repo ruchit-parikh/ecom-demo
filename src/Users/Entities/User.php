@@ -3,7 +3,9 @@
 namespace EcomDemo\Users\Entities;
 
 use Carbon\Carbon;
+use EcomDemo\Files\Entities\File;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +24,7 @@ use Str;
  * @property string $phone_number
  * @property boolean $is_marketing
  * @property string|null $avatar
+ * @property File|null $avatarFile
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $last_login_at
@@ -201,5 +204,77 @@ class User extends Authenticatable
         $this->avatar = $avatarUuid;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber(): string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMarketing(): bool
+    {
+        return $this->is_marketing;
+    }
+
+    /**
+     * @return Carbon|null
+     */
+    public function getLastLoggedInAt(): ?Carbon
+    {
+        return $this->last_login_at ? Carbon::parse($this->last_login_at) : null;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getAvatar(): ?File
+    {
+        return $this->avatarFile;
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function avatarFile(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'avatar', 'uuid');
     }
 }

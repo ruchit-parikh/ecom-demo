@@ -15,3 +15,4 @@ docker-compose exec workspace bash -c "echo JWT_PASSPHRASE=\"$passphrase\" >> .e
 echo "RSA keys for jwt token generated successfully!"
 
 docker-compose exec workspace bash -c "php artisan --env=testing cache:clear"
+docker-compose exec workspace bash -c "php artisan -env=testing storage:link"
