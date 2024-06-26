@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ResetPasswordFormRequest extends FormRequest
@@ -9,7 +10,7 @@ class ResetPasswordFormRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -25,7 +26,10 @@ class ResetPasswordFormRequest extends FormRequest
      */
     public function getEmail(): string
     {
-        return $this->post('email');
+        /** @var string $email */
+        $email = $this->post('email');
+
+        return $email;
     }
 
     /**
@@ -33,7 +37,10 @@ class ResetPasswordFormRequest extends FormRequest
      */
     public function getPass(): string
     {
-        return $this->post('password');
+        /** @var string $password */
+        $password = $this->post('password');
+
+        return $password;
     }
 
     /**
@@ -41,6 +48,9 @@ class ResetPasswordFormRequest extends FormRequest
      */
     public function getToken(): string
     {
-        return $this->post('token');
+        /** @var string $token */
+        $token = $this->post('token');
+
+        return $token;
     }
 }

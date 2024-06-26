@@ -10,12 +10,14 @@ use App\Mail\Auth\PasswordResetLinkEmail;
 use App\Mail\Auth\PasswordResetSuccessfulEmail;
 use Carbon\Carbon;
 use DB;
+use EcomDemo\Users\Entities\User;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
 use EcomDemo\Users\Services\TokensManager;
 use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mail;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -47,6 +49,7 @@ class AuthController extends Controller
      */
     public function login(LoginFormRequest $request): JsonResponse
     {
+        /** @var User $user */
         $user = $this->userRepository->findByEmail($request->getEmail());
 
         if (!$user->isPasswordValid($request->getPass())) {
@@ -92,7 +95,9 @@ class AuthController extends Controller
      */
     public function sendPasswordResetLink(SendPasswordResetLinkFormRequest $request): JsonResponse
     {
+        /** @var stdClass|null $resetAttempt */
         $resetAttempt = DB::table('password_reset_tokens')
+            ->select('token')
             ->where('email', '=', $request->getEmail())
             ->latest()
             ->first();
@@ -100,7 +105,7 @@ class AuthController extends Controller
         if ($resetAttempt) {
             Mail::to($request->getEmail())->queue(new PasswordResetLinkEmail(bcrypt($resetAttempt->token)));
         } else {
-            $pin = rand(100000, 999999);
+            $pin = (string) rand(100000, 999999);
 
             DB::table('password_reset_tokens')
                 ->insert(
@@ -124,8 +129,11 @@ class AuthController extends Controller
      */
     public function resetPassword(ResetPasswordFormRequest $request): JsonResponse
     {
-        $token        = $request->getToken();
+        $token = $request->getToken();
+
+        /** @var stdClass|null $resetAttempt */
         $resetAttempt = DB::table('password_reset_tokens')
+            ->select('token')
             ->where('email', '=', $request->getEmail())
             ->latest()
             ->first();
@@ -152,7 +160,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $this->tokensManager->invalidate($request->bearerToken());
+        /** @var string $bearer */
+        $bearer = $request->bearerToken();
+
+        $this->tokensManager->invalidate($bearer);
 
         return response()->json(['message' => __('You are logged out successfully')]);
     }
