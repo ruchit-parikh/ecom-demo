@@ -21,9 +21,10 @@ use Str;
  * @property string $address
  * @property string $phone_number
  * @property boolean $is_marketing
+ * @property string|null $avatar
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon $last_login_at
+ * @property Carbon|null $last_login_at
  */
 class User extends Authenticatable
 {
@@ -48,11 +49,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * @var array<string, string>
-     */
-    protected $casts = ['last_login_at' => 'date'];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -61,7 +57,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'last_login_at'     => 'datetime',
         ];
     }
 
@@ -98,5 +95,111 @@ class User extends Authenticatable
     public function isPasswordValid(?string $password): bool
     {
         return Hash::check($password, $this->password);
+    }
+
+    /**
+     * @return $this
+     */
+    public function refreshLastLoggedIn(): self
+    {
+        $this->last_login_at = Carbon::now();
+
+        return $this;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName(string $firstName): self
+    {
+        $this->first_name = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword(string $password): self
+    {
+        $this->password = Hash::make($password);
+
+        return $this;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return $this
+     */
+    public function setLastName(string $lastName): self
+    {
+        $this->last_name = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @param string $address
+     *
+     * @return $this
+     */
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @param string $phoneNumber
+     *
+     * @return $this
+     */
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        $this->phone_number = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return $this
+     */
+    public function setMarketingPreference(bool $enabled): self
+    {
+        $this->is_marketing = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $avatarUuid
+     *
+     * @return $this
+     */
+    public function setAvatarUuid(?string $avatarUuid): self
+    {
+        $this->avatar = $avatarUuid;
+
+        return $this;
     }
 }

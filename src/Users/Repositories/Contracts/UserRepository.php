@@ -26,4 +26,19 @@ interface UserRepository
      * @return User
      */
     public function create(array $data): User;
+
+    /**
+     * @param User $user
+     *
+     * @return User
+     */
+    public function refreshLastLoggedIn(User $user): User;
+
+    /**
+     * @param string $email
+     * @param string $password
+     *
+     * @return void
+     */
+    public function updatePassword(string $email, string $password): void;
 }

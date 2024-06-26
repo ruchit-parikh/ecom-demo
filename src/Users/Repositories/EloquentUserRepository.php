@@ -4,7 +4,6 @@ namespace EcomDemo\Users\Repositories;
 
 use EcomDemo\Users\Entities\User;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
-use Hash;
 
 class EloquentUserRepository implements UserRepository
 {
@@ -39,13 +38,46 @@ class EloquentUserRepository implements UserRepository
             'first_name'   => $data['first_name'],
             'last_name'    => $data['last_name'],
             'email'        => $data['email'],
-            'password'     => Hash::make($data['password']),
             'address'      => $data['address'],
             'phone_number' => $data['phone_number']
         ]);
 
+        $user->setPassword($data['password']);
+
+        if (isset($data['is_marketing'])) {
+            $user->setMarketingPreference($data['is_marketing']);
+        }
+
+        if (!empty($data['avatar'])) {
+            $user->setAvatarUuid($data['avatar']);
+        }
+
         $user->save();
 
         return $user->refresh();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function refreshLastLoggedIn(User $user): User
+    {
+        $user->refreshLastLoggedIn();
+
+        $user->save();
+
+        return $user->refresh();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function updatePassword(string $email, string $password): void
+    {
+        /** @var User $user */
+        $user = User::where('email', '=', $email)->firstOrFail();
+
+        $user->setPassword($password)
+            ->saveOrFail();
     }
 }

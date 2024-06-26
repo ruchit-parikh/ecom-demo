@@ -9,6 +9,7 @@ As we are setting up environment through docker, you will need it installed.
 ### How to Setup
 
 - Clone this project from git
+- Specify your credentials that you want to use for smtp mails in your .env.docker.example
 - Run command `docker-compose up -d` to start server on linux. Your server will be started on `localhost:8000` and phpmyadmin on `localhost:8080`
 - Run bash script `setup.sh` from root directory. On linux machine you can do it using `sh ./setup.sh` to setup and seed database and download dependencies
 - To run tests you will need to setup test environment, run bash script `test.sh` to set it up and make sure to specify environment `testing` while running them

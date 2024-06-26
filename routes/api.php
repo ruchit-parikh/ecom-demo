@@ -15,5 +15,8 @@ Route::namespace('\App\Http\Controllers')->group(function() {
         Route::post('/user/logout', 'AuthController@logout');
     });
 
+    Route::post('/user/reset-password-token', 'AuthController@resetPassword');
+    Route::post('/user/forgot-password', 'AuthController@sendPasswordResetLink');
+    Route::post('/user/create', 'AuthController@register');
     Route::post('/user/login', 'AuthController@login');
 });

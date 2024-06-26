@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->unique();
+            $table->uuid('uuid')->unique()->comment('UUID to allow easy migration between environments without breaking FK in the logic');
             $table->string('first_name');
             $table->string('last_name');
             $table->boolean('is_admin')->default(0);
@@ -21,7 +21,7 @@ return new class () extends Migration {
             $table->string('password');
             $table->string('address');
             $table->string('phone_number');
-            $table->boolean('is_marketing')->default(0);
+            $table->boolean('is_marketing')->default(0)->comment('Enable marketing preferences');
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('last_login_at')->nullable();

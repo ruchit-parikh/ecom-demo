@@ -37,7 +37,7 @@ class JWTAuthenticate
     public function handle(Request $request, Closure $next)
     {
         if ($this->auth->guard(config('auth.defaults.guard'))->guest()) {
-            return response()->json(['message' => 'You are not logged in or token you passed is expired'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => __('You are not logged in or token you passed is expired')], Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);
