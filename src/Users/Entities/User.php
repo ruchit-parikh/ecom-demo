@@ -207,6 +207,18 @@ class User extends Authenticatable
     }
 
     /**
+     * @param bool $isAdmin
+     *
+     * @return $this
+     */
+    public function asAdmin(bool $isAdmin): self
+    {
+        $this->is_admin = $isAdmin;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFirstName(): string

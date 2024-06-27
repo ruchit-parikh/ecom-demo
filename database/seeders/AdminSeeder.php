@@ -32,6 +32,7 @@ class AdminSeeder extends Seeder
             'password'     => 'admin',
             'address'      => fake()->address(),
             'phone_number' => fake()->phoneNumber(),
+            'is_admin'     => 1,
         ]);
     }
 }

@@ -52,6 +52,10 @@ class EloquentUserRepository implements UserRepository
             $user->setAvatarUuid($data['avatar']);
         }
 
+        if (isset($data['is_admin'])) {
+            $user->asAdmin(true);
+        }
+
         $user->save();
 
         return $user->refresh();
