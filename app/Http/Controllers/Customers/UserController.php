@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customers;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\SaveUserFormRequest;
 use App\Http\Resources\Orders\OrderCollection;
 use App\Http\Resources\Users\UserResource;
