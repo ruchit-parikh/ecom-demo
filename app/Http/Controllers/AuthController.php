@@ -53,7 +53,7 @@ class AuthController extends Controller
         $user = $this->userRepository->findByEmail($request->getEmail());
 
         if (!$user->isPasswordValid($request->getPass())) {
-            return response()->json(['message' => __('Your given credentials do not match')], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => __('Your given credentials do not match')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $tokens = $this->tokensManager->generateForUser($user);
@@ -139,7 +139,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$resetAttempt || !Hash::check($resetAttempt->token, urldecode($token))) {
-            return response()->json(['message' => __('Provided token doesnt match for password reset or is expired')], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => __('Provided token doesnt match for password reset or is expired')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $this->userRepository->updatePassword($request->getEmail(), $request->getPass());

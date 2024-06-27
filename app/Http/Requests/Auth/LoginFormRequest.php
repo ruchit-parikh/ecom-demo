@@ -25,10 +25,7 @@ class LoginFormRequest extends FormRequest
      */
     public function getEmail(): string
     {
-        /** @var string $email */
-        $email = $this->post('email');
-
-        return $email;
+        return $this->string('email');
     }
 
     /**
@@ -36,9 +33,6 @@ class LoginFormRequest extends FormRequest
      */
     public function getPass(): string
     {
-        /** @var string $password */
-        $password = $this->post('password');
-
-        return $password;
+        return $this->string('password');
     }
 }

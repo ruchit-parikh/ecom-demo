@@ -91,13 +91,13 @@ class UserController extends Controller
         /** @var OrderRepository $ordersRepository */
         $ordersRepository = app(OrderRepository::class);
 
-        $filters = new PaginationFilters($request->get('page', 1), $request->get('limit', 10));
+        $filters = new PaginationFilters($request->integer('page', 1), $request->integer('limit', 10));
 
         if ($request->has('sortBy')) {
-            if ($request->get('desc')) {
-                $filters->sortBy($request->get('sortBy'));
+            if ($request->boolean('desc')) {
+                $filters->sortBy($request->string('sortBy'));
             } else {
-                $filters->sortBy($request->get('sortBy'), false);
+                $filters->sortBy($request->string('sortBy'), false);
             }
         }
 

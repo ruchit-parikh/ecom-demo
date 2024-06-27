@@ -24,9 +24,6 @@ class SendPasswordResetLinkFormRequest extends FormRequest
      */
     public function getEmail(): string
     {
-        /** @var string $email */
-        $email = $this->post('email');
-
-        return $email;
+        return $this->string('email');
     }
 }
