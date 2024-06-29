@@ -6,11 +6,14 @@ use EcomDemo\Orders\Entities\Order;
 use EcomDemo\Users\Entities\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\AuthorizedTest;
+use Tests\Feature\HasCustomerMiddleware;
 
-class OrdersTest extends TestCase
+class OrdersTest extends AuthorizedTest
 {
     use RefreshDatabase;
+    use HasCustomerMiddleware;
 
     public function test_can_see_current_user_orders_first_page()
     {
@@ -43,7 +46,7 @@ class OrdersTest extends TestCase
             ];
         }
 
-        $this->authorizedGet($user, '/api/v1/user/orders')
+        $this->makeAuthorizedRequest($user)
             ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertJsonCount(10, 'data')
             ->assertJsonFragment(['data' => $resources]);
@@ -80,9 +83,17 @@ class OrdersTest extends TestCase
             ];
         }
 
-        $this->authorizedGet($user, '/api/v1/user/orders?page=3&limit=5')
+        $this->authorizedGet('/api/v1/user/orders?page=3&limit=5', $user)
             ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertJsonCount(5, 'data')
             ->assertJsonFragment(['data' => $resources]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function makeAuthorizedRequest(?User $user = null): TestResponse
+    {
+        return $this->authorizedGet('/api/v1/user/orders', $user);
     }
 }

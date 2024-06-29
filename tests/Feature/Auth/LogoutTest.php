@@ -23,7 +23,7 @@ class LogoutTest extends TestCase
             'Authorization' => 'Bearer ' . $tokens['access_token']
         ]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message']);
 
         /** @var JWTTokensService $tokensService */
@@ -51,7 +51,7 @@ class LogoutTest extends TestCase
             'Authorization' => 'Bearer ' . $tokens['access_token']
         ]);
 
-        $response->assertStatus(403)
+        $response->assertForbidden()
             ->assertJsonStructure(['message']);
 
         $this->assertDatabaseHas(JWTToken::class, [

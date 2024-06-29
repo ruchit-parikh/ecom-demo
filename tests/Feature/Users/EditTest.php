@@ -5,11 +5,14 @@ namespace Tests\Feature\Users;
 use EcomDemo\Files\Entities\File;
 use EcomDemo\Users\Entities\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\AuthorizedTest;
+use Tests\Feature\HasCustomerMiddleware;
 
-class EditTest extends TestCase
+class EditTest extends AuthorizedTest
 {
     use RefreshDatabase;
+    use HasCustomerMiddleware;
 
     public function test_can_edit_current_user()
     {
@@ -28,7 +31,7 @@ class EditTest extends TestCase
             'avatar'       => $file->getUuid(),
         ]);
 
-        $response = $this->authorizedPut($user, '/api/v1/user/edit', [
+        $response = $this->authorizedPut('/api/v1/user/edit', $user, [
             'first_name'   => 'Sasuke',
             'last_name'    => 'Uchiha',
             'email'        => 'narutouzumaki@hiddenleaf.com',
@@ -39,7 +42,7 @@ class EditTest extends TestCase
             'avatar'       => $file->getUuid(),
         ]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message', 'data']);
 
         $response->assertJsonFragment(['data' => [
@@ -82,6 +85,16 @@ class EditTest extends TestCase
             'phone_number' => '+918855663322',
             'is_marketing' => '0',
             'avatar'       => $file->getUuid(),
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function makeAuthorizedRequest(?User $user = null): TestResponse
+    {
+        return $this->authorizedPut('/api/v1/user/edit', $user, [
+            'first_name' => 'Name for authorization check',
         ]);
     }
 }

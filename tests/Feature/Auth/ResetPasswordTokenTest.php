@@ -30,7 +30,7 @@ class ResetPasswordTokenTest extends TestCase
             'password_confirmation' => 'newpassword'
         ]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message']);
 
         Mail::assertQueued(PasswordResetSuccessfulEmail::class, function ($mail) use ($user) {
@@ -60,7 +60,7 @@ class ResetPasswordTokenTest extends TestCase
             'password_confirmation' => 'newpassword'
         ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['message']);
 
         Mail::assertNotQueued(PasswordResetSuccessfulEmail::class);
@@ -87,7 +87,7 @@ class ResetPasswordTokenTest extends TestCase
             'password_confirmation' => 'newpassword'
         ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['message']);
 
         Mail::assertNotQueued(PasswordResetSuccessfulEmail::class);
@@ -115,7 +115,7 @@ class ResetPasswordTokenTest extends TestCase
             'password_confirmation' => 'newpassword'
         ]);
 
-        $response->assertStatus(403)
+        $response->assertForbidden()
             ->assertJsonStructure(['message']);
 
         Mail::assertNotQueued(PasswordResetSuccessfulEmail::class);

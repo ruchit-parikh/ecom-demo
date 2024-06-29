@@ -21,7 +21,7 @@ class LoginTest extends TestCase
             'password' => 'admin@123'
         ]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['access_token', 'refresh_token']);
 
         $this->assertDatabaseHas(JWTToken::class, [
@@ -47,7 +47,7 @@ class LoginTest extends TestCase
             'password' => 'wrongpassword'
         ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['message']);
 
         $this->assertDatabaseMissing(JWTToken::class, [
@@ -73,7 +73,7 @@ class LoginTest extends TestCase
             'password' => 'admin@123'
         ]);
 
-        $response->assertStatus(403)
+        $response->assertForbidden()
             ->assertJsonStructure(['message']);
 
         $this->assertDatabaseMissing(JWTToken::class, [

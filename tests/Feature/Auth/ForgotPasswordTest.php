@@ -21,7 +21,7 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->postJson('/api/v1/user/forgot-password', ['email' => $user->getEmail()]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message']);
 
         Mail::assertQueued(PasswordResetLinkEmail::class, function ($mail) use ($user) {
@@ -42,7 +42,7 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->postJson('/api/v1/user/forgot-password', ['email' => $user->getEmail()]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message']);
 
         Mail::assertQueued(PasswordResetLinkEmail::class, function ($mail) use ($user) {
@@ -61,7 +61,7 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->postJson('/api/v1/user/forgot-password', ['email' => $user->getEmail()]);
 
-        $response->assertStatus(403)
+        $response->assertForbidden()
             ->assertJsonStructure(['message']);
 
         Mail::assertNotQueued(PasswordResetLinkEmail::class);

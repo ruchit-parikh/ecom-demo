@@ -29,7 +29,7 @@ class CreateTest extends TestCase
             'avatar'                => $file->getUuid(),
         ]);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonStructure(['message','access_token', 'refresh_token']);
 
         $this->assertDatabaseHas(User::class, [

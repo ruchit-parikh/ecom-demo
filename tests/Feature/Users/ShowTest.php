@@ -5,11 +5,14 @@ namespace Tests\Feature\Users;
 use EcomDemo\Files\Entities\File;
 use EcomDemo\Users\Entities\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\AuthorizedTest;
+use Tests\Feature\HasCustomerMiddleware;
 
-class ShowTest extends TestCase
+class ShowTest extends AuthorizedTest
 {
     use RefreshDatabase;
+    use HasCustomerMiddleware;
 
     public function test_if_can_see_current_user()
     {
@@ -27,8 +30,8 @@ class ShowTest extends TestCase
             'avatar'       => $file->getUuid()
         ]);
 
-        $this->authorizedGet($user, '/api/v1/user')
-            ->assertStatus(200)
+        $this->makeAuthorizedRequest($user)
+            ->assertOk()
             ->assertJson(['data' => [
                 'uuid'          => $user->getUuid(),
                 'first_name'    =>  'Tayara',
@@ -46,5 +49,13 @@ class ShowTest extends TestCase
                 ],
                 'last_login_at' => $user->getLastLoggedInAt() ? $user->getLastLoggedInAt()->toDayDateTimeString() : 'N/A'
             ]]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function makeAuthorizedRequest(?User $user = null): TestResponse
+    {
+        return $this->authorizedGet('/api/v1/user', $user);
     }
 }
