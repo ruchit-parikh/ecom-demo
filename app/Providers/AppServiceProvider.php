@@ -22,15 +22,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
-        $this->app->bind(JWTTokensRepository::class, EloquentJWTTokensRepository::class);
-        $this->app->bind(OrderRepository::class, EloquentOrderRepository::class);
+        $this->app->singleton(UserRepository::class, EloquentUserRepository::class);
+        $this->app->singleton(JWTTokensRepository::class, EloquentJWTTokensRepository::class);
+        $this->app->singleton(OrderRepository::class, EloquentOrderRepository::class);
 
-        $this->app->bind(JWTTokensService::class, function ($app) {
+        $this->app->singleton(JWTTokensService::class, function ($app) {
             return new LcobucciJWTTokensService(storage_path('keys/private_key.pem'), storage_path('keys/public_key.pem'), config('jwt.pass_phrase'));
         });
 
-        $this->app->bind(TokensManager::class, function ($app) {
+        $this->app->singleton(TokensManager::class, function ($app) {
             $tokensService    = $app->make(JWTTokensService::class);
             $tokensRepository = $app->make(JWTTokensRepository::class);
 

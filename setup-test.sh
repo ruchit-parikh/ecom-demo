@@ -3,7 +3,6 @@
 docker-compose exec workspace bash -c "cp .env.testing.example .env.testing"
 docker-compose exec workspace bash -c "php artisan --env=testing key:generate"
 docker-compose exec workspace bash -c "php artisan --env=testing migrate:fresh --seed --force --ansi"
-docker-compose exec workspace bash -c "php artisan --env=testing db:seed --class=TestSeeder --ansi"
 
 # Generate a private and public key for your jwt tokens
 passphrase=$(openssl rand -base64 32)
@@ -17,5 +16,3 @@ echo "RSA keys for jwt token generated successfully!"
 docker-compose exec workspace bash -c "php artisan --env=testing cache:clear"
 docker-compose exec workspace bash -c "php artisan --env=testing route:clear"
 
-# This will be only needed if not setup
-docker-compose exec workspace bash -c "php artisan -env=testing storage:link"
