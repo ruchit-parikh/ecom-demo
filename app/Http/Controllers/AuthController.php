@@ -52,6 +52,10 @@ class AuthController extends Controller
         /** @var User $user */
         $user = $this->userRepository->findByEmail($request->getEmail());
 
+        if ($user->isAdmin()) {
+            return response()->json(['message' => __('You cannot login using this route')], Response::HTTP_FORBIDDEN);
+        }
+
         if (!$user->isPasswordValid($request->getPass())) {
             return response()->json(['message' => __('Your given credentials do not match')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -95,6 +99,13 @@ class AuthController extends Controller
      */
     public function sendPasswordResetLink(SendPasswordResetLinkFormRequest $request): JsonResponse
     {
+        /** @var User $user */
+        $user = $this->userRepository->findByEmail($request->getEmail());
+
+        if ($user->isAdmin()) {
+            return response()->json(['message' => __('You cannot send password reset link using this endpoint')], Response::HTTP_FORBIDDEN);
+        }
+
         /** @var stdClass|null $resetAttempt */
         $resetAttempt = DB::table('password_reset_tokens')
             ->select('token')
@@ -129,6 +140,13 @@ class AuthController extends Controller
      */
     public function resetPassword(ResetPasswordFormRequest $request): JsonResponse
     {
+        /** @var User $user */
+        $user = $this->userRepository->findByEmail($request->getEmail());
+
+        if ($user->isAdmin()) {
+            return response()->json(['message' => __('You cannot reset password using this endpoint')], Response::HTTP_FORBIDDEN);
+        }
+
         $token = $request->getToken();
 
         /** @var stdClass|null $resetAttempt */
@@ -162,6 +180,13 @@ class AuthController extends Controller
     {
         /** @var string $bearer */
         $bearer = $request->bearerToken();
+
+        /** @var User $user */
+        $user = $this->tokensManager->getUserFrom($bearer);
+
+        if ($user->isAdmin()) {
+            return response()->json(['message' => __('Your cannot logout using this route')], Response::HTTP_FORBIDDEN);
+        }
 
         $this->tokensManager->invalidate($bearer);
 

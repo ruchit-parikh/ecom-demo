@@ -70,17 +70,17 @@ class Order extends Model
     /**
      * @return string|null
      */
-    public function getDeliveryFee(): ?string
+    public function getDeliveryFeeFormatted(): ?string
     {
-        return $this->delivery_fee;
+        return $this->delivery_fee ? number_format($this->delivery_fee, 2) : null;
     }
 
     /**
      * @return string
      */
-    public function getAmount(): string
+    public function getAmountFormatted(): string
     {
-        return $this->amount;
+        return number_format($this->amount, 2);
     }
 
     /**

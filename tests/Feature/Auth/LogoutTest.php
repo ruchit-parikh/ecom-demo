@@ -37,4 +37,31 @@ class LogoutTest extends TestCase
             'expires_at'  => $parsed->getExpiresAt()
         ]);
     }
+
+    public function test_admin_cannot_logout()
+    {
+        /** @var TokensManager $tokensManager */
+        $tokensManager = app(TokensManager::class);
+
+        /** @var User $user */
+        $user   = User::factory()->admin()->create();
+        $tokens = $tokensManager->generateForUser($user);
+
+        $response = $this->postJson('/api/v1/user/logout', [], [
+            'Authorization' => 'Bearer ' . $tokens['access_token']
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJsonStructure(['message']);
+
+        $this->assertDatabaseHas(JWTToken::class, [
+            'user_id'     => $user->getKey(),
+            'token_title' => 'access_token',
+        ]);
+
+        $this->assertDatabaseHas(JWTToken::class, [
+            'user_id'     => $user->getKey(),
+            'token_title' => 'refresh_token',
+        ]);
+    }
 }

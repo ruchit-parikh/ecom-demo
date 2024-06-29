@@ -36,8 +36,8 @@ class OrdersTest extends TestCase
                 ],
                 'products'     => $order->getProducts(),
                 'address'      => $order->getAddress(),
-                'delivery_fee' => $order->getDeliveryFee(),
-                'amount'       => $order->getAmount(),
+                'delivery_fee' => $order->getDeliveryFeeFormatted(),
+                'amount'       => $order->getAmountFormatted(),
                 'shipped_at'   => $order->shippedAt() ? $order->shippedAt()->toDayDateTimeString() : 'N/A',
                 'placed_at'    => $order->getCreatedAt()->toDayDateTimeString(),
             ];
@@ -60,6 +60,7 @@ class OrdersTest extends TestCase
         $resources = [];
 
         foreach ($orders->chunk(5)->offsetGet(2) as $order) {
+            /** @var Order $order */
             $payment = $order->getPayment();
 
             $resources[] = [
@@ -72,8 +73,8 @@ class OrdersTest extends TestCase
                 ],
                 'products'     => $order->getProducts(),
                 'address'      => $order->getAddress(),
-                'delivery_fee' => $order->getDeliveryFee(),
-                'amount'       => $order->getAmount(),
+                'delivery_fee' => $order->getDeliveryFeeFormatted(),
+                'amount'       => $order->getAmountFormatted(),
                 'shipped_at'   => $order->shippedAt() ? $order->shippedAt()->toDayDateTimeString() : 'N/A',
                 'placed_at'    => $order->getCreatedAt()->toDayDateTimeString(),
             ];

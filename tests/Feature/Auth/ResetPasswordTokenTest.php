@@ -95,4 +95,32 @@ class ResetPasswordTokenTest extends TestCase
         $this->assertFalse($user->fresh()->isPasswordValid('newpassword'));
         $this->assertDatabaseHas('password_reset_tokens', ['email' => $user->getEmail(), 'token' => $pin]);
     }
+
+    public function test_admin_cannot_reset_password()
+    {
+        /** @var User $user */
+        $user  = User::factory()->admin()->create();
+        $pin   = '123456';
+
+        DB::table('password_reset_tokens')->insert([
+            'email'      => $user->getEmail(),
+            'token'      => $pin,
+            'created_at' => Carbon::now()
+        ]);
+
+        $response = $this->postJson('/api/v1/user/reset-password-token', [
+            'token'                 => urlencode(bcrypt('123456')),
+            'email'                 => $user->getEmail(),
+            'password'              => 'newpassword',
+            'password_confirmation' => 'newpassword'
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJsonStructure(['message']);
+
+        Mail::assertNotQueued(PasswordResetSuccessfulEmail::class);
+
+        $this->assertFalse($user->fresh()->isPasswordValid('newpassword'));
+        $this->assertDatabaseHas('password_reset_tokens', ['email' => $user->getEmail(), 'token' => $pin]);
+    }
 }

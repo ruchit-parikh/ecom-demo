@@ -25,8 +25,8 @@ class OrderResource extends JsonResource
             'payment'      => PaymentResource::make($this->resource->getPayment()),
             'products'     => $this->resource->getProducts(),
             'address'      => $this->resource->getAddress(),
-            'delivery_fee' => $this->resource->getDeliveryFee(),
-            'amount'       => $this->resource->getAmount(),
+            'delivery_fee' => $this->resource->getDeliveryFeeFormatted(),
+            'amount'       => $this->resource->getAmountFormatted(),
             'shipped_at'   => $this->resource->shippedAt() ? $this->resource->shippedAt()->toDayDateTimeString() : 'N/A',
             'placed_at'    => $this->resource->getCreatedAt()->toDayDateTimeString(),
         ];

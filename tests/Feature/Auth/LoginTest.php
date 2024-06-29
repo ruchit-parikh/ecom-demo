@@ -60,4 +60,30 @@ class LoginTest extends TestCase
             'token_title' => 'refresh_token',
         ]);
     }
+
+    public function test_admin_cannot_login()
+    {
+        /** @var User $user */
+        $user = User::factory()->admin()->create([
+            'password' => Hash::make('admin@123'),
+        ]);
+
+        $response = $this->postJson('/api/v1/user/login', [
+            'email'    => $user->getEmail(),
+            'password' => 'admin@123'
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJsonStructure(['message']);
+
+        $this->assertDatabaseMissing(JWTToken::class, [
+            'user_id'     => $user->getKey(),
+            'token_title' => 'access_token',
+        ]);
+
+        $this->assertDatabaseMissing(JWTToken::class, [
+            'user_id'     => $user->getKey(),
+            'token_title' => 'refresh_token',
+        ]);
+    }
 }

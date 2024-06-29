@@ -53,4 +53,18 @@ class ForgotPasswordTest extends TestCase
 
         $this->assertEquals($pin, $last->token);
     }
+
+    public function test_admin_cannot_send_password_reset_link()
+    {
+        /** @var User $user */
+        $user = User::factory()->admin()->create();
+
+        $response = $this->postJson('/api/v1/user/forgot-password', ['email' => $user->getEmail()]);
+
+        $response->assertStatus(403)
+            ->assertJsonStructure(['message']);
+
+        Mail::assertNotQueued(PasswordResetLinkEmail::class);
+        $this->assertDatabaseMissing('password_reset_tokens', ['email' => $user->getEmail()]);
+    }
 }
