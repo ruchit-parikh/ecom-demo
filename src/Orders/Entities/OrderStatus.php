@@ -3,6 +3,7 @@
 namespace EcomDemo\Orders\Entities;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
@@ -15,6 +16,8 @@ use Str;
  */
 class OrderStatus extends Model
 {
+    use HasFactory;
+
     protected static function boot()
     {
         parent::boot();

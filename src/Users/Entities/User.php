@@ -275,6 +275,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return string|null
+     */
+    public function getAvatarUuid(): ?string
+    {
+        return $this->avatar;
+    }
+
+    /**
      * @return File|null
      */
     public function getAvatar(): ?File

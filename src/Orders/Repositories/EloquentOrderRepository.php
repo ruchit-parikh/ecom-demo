@@ -16,8 +16,9 @@ class EloquentOrderRepository implements OrderRepository
     public function getUserOrders(User $user, PaginationFilters $filters): LengthAwarePaginator
     {
         return Order::with('payment')
+            ->select('*')
             ->where('user_id', $user->getKey())
             ->orderBy($filters->getSortBy(), $filters->getSortDirection())
-            ->paginate($filters->getPage(), $filters->getLimit());
+            ->paginate($filters->getLimit(), $filters->getPage());
     }
 }

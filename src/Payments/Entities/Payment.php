@@ -3,6 +3,7 @@
 namespace EcomDemo\Payments\Entities;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
@@ -16,6 +17,8 @@ use Str;
  */
 class Payment extends Model
 {
+    use HasFactory;
+
     /**
      * @var string[]
      */

@@ -4,6 +4,7 @@ namespace EcomDemo\Orders\Entities;
 
 use Carbon\Carbon;
 use EcomDemo\Payments\Entities\Payment;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Str;
@@ -23,6 +24,8 @@ use Str;
  */
 class Order extends Model
 {
+    use HasFactory;
+
     /**
      * @var string[]
      */
@@ -65,17 +68,17 @@ class Order extends Model
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getDeliveryFee(): ?float
+    public function getDeliveryFee(): ?string
     {
         return $this->delivery_fee;
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getAmount(): float
+    public function getAmount(): string
     {
         return $this->amount;
     }

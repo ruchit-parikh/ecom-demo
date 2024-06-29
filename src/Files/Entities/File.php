@@ -3,6 +3,7 @@
 namespace EcomDemo\Files\Entities;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Str;
@@ -19,6 +20,8 @@ use Str;
  */
 class File extends Model
 {
+    use HasFactory;
+
     protected static function boot()
     {
         parent::boot();
