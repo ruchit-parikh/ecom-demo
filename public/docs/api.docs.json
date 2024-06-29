@@ -58,6 +58,9 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Not authorized for given user email"
+                    },
                     "422": {
                         "description": "Unprocessable entity for validation errors"
                     },
@@ -212,6 +215,9 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Not authorized for given user email"
+                    },
                     "422": {
                         "description": "Unprocessable entity for validation errors"
                     },
@@ -281,6 +287,9 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Not authorized for given user email"
+                    },
                     "422": {
                         "description": "Unprocessable entity for validation errors"
                     },
@@ -311,6 +320,9 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Not authorized for given user email"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -345,6 +357,9 @@
                     "401": {
                         "description": "Unauthorized"
                     },
+                    "403": {
+                        "description": "Not authorized for given user"
+                    },
                     "500": {
                         "description": "Internal server error"
                     }
@@ -378,6 +393,9 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not authorized for given user"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -472,6 +490,9 @@
                     "401": {
                         "description": "Unauthorized"
                     },
+                    "403": {
+                        "description": "Not authorized for given user"
+                    },
                     "422": {
                         "description": "Unprocessable entity for validation errors"
                     },
@@ -546,6 +567,9 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not authorized for given user"
                     },
                     "500": {
                         "description": "Internal server error"
