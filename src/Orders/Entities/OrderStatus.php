@@ -11,12 +11,19 @@ use Str;
  * @property int $id
  * @property string $uuid
  * @property string $title
+ * @property string $slug
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
 class OrderStatus extends Model
 {
     use HasFactory;
+
+    const STATUS_OPEN            = 'open';
+    const STATUS_PENDING_PAYMENT = 'pending_payment';
+    const STATUS_PAID            = 'paid';
+    const STATUS_SHIPPED         = 'shipped';
+    const STATUS_CANCELLED       = 'cancelled';
 
     protected static function boot()
     {
@@ -33,5 +40,29 @@ class OrderStatus extends Model
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getPredefined(): array
+    {
+        return [static::STATUS_OPEN, static::STATUS_PENDING_PAYMENT, static::STATUS_PAID, static::STATUS_SHIPPED, static::STATUS_CANCELLED];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShipped(): bool
+    {
+        return $this->slug === static::STATUS_SHIPPED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaid(): bool
+    {
+        return $this->slug === static::STATUS_PAID;
     }
 }

@@ -26,6 +26,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    const FREE_DELIVERY_MIN_AMOUNT_ELIGIBLE = 1850;
+
+    const DELIVER_FEE = 15;
+
     /**
      * @var string[]
      */

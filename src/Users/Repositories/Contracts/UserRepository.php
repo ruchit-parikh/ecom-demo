@@ -3,9 +3,17 @@
 namespace EcomDemo\Users\Repositories\Contracts;
 
 use EcomDemo\Users\Entities\User;
+use Illuminate\Support\Collection;
 
 interface UserRepository
 {
+    /**
+     * @param int $limit
+     *
+     * @return Collection<string, User>
+     */
+    public function getCustomers(int $limit): Collection;
+
     /**
      * @param string $uuid
      *

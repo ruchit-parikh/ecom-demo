@@ -4,6 +4,7 @@ namespace EcomDemo\Users\Entities;
 
 use Carbon\Carbon;
 use EcomDemo\Files\Entities\File;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -296,5 +297,15 @@ class User extends Authenticatable
     public function avatarFile(): BelongsTo
     {
         return $this->belongsTo(File::class, 'avatar', 'uuid');
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeCustomer(Builder $query): Builder
+    {
+        return $query->where('is_admin', 0);
     }
 }

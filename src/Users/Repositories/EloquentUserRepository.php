@@ -4,9 +4,19 @@ namespace EcomDemo\Users\Repositories;
 
 use EcomDemo\Users\Entities\User;
 use EcomDemo\Users\Repositories\Contracts\UserRepository;
+use Illuminate\Support\Collection;
 
 class EloquentUserRepository implements UserRepository
 {
+    /**
+     * @inheritDoc
+     */
+    public function getCustomers(int $limit): Collection
+    {
+        /** @var Collection<string, User> */
+        return User::customer()->limit($limit)->get();
+    }
+
     /**
      * @inheritDoc
      */

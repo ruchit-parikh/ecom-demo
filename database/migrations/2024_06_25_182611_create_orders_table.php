@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('uuid')->comment('UUID to allow easy migration between environments without breaking FK in the logic');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
 
@@ -23,8 +24,8 @@ return new class () extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('order_status_id');
             $table->foreign('order_status_id')->references('id')->on('order_statuses');
-            $table->unsignedBigInteger('payment_id');
-            $table->foreign('payment_id')->references('id')->on('payments');
+            $table->unsignedBigInteger('payment_id')->nullable();
+            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('set null');
             $table->string('uuid')->unique()->comment('UUID to allow easy migration between environments without breaking FK in the logic');
             $table->json('products');
             $table->json('address');
