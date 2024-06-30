@@ -12,6 +12,7 @@ use EcomDemo\Users\Repositories\EloquentUserRepository;
 use EcomDemo\Users\Services\Contracts\JWTTokensService;
 use EcomDemo\Users\Services\LcobucciJWTTokensService;
 use EcomDemo\Users\Services\TokensManager;
+use Illuminate\Config\Repository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +28,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(OrderRepository::class, EloquentOrderRepository::class);
 
         $this->app->singleton(JWTTokensService::class, function ($app) {
-            return new LcobucciJWTTokensService(storage_path('keys/private_key.pem'), storage_path('keys/public_key.pem'), config('jwt.pass_phrase'));
+            /** @var Repository $configRepository */
+            $configRepository = $app->make(Repository::class);
+
+            return new LcobucciJWTTokensService(storage_path('keys/private_key.pem'), storage_path('keys/public_key.pem'), $configRepository);
         });
 
         $this->app->singleton(TokensManager::class, function ($app) {

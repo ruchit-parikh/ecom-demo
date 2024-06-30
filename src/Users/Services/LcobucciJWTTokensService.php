@@ -6,6 +6,8 @@ use DateTimeImmutable;
 use EcomDemo\Users\Services\Contracts\JWTToken;
 use EcomDemo\Users\Services\Contracts\JWTTokensService;
 use Exception;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Support\Str;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
@@ -15,7 +17,6 @@ use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\RelatedTo;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Str;
 
 class LcobucciJWTTokensService implements JWTTokensService
 {
@@ -30,20 +31,20 @@ class LcobucciJWTTokensService implements JWTTokensService
     protected string $publicKey;
 
     /**
-     * @var string
+     * @var ConfigRepository
      */
-    protected string $passPhrase;
+    protected ConfigRepository $configRepository;
 
     /**
      * @param string $privateKey
      * @param string $publicKey
-     * @param string $passPhrase
+     * @param ConfigRepository $configRepository
      */
-    public function __construct(string $privateKey, string $publicKey, string $passPhrase)
+    public function __construct(string $privateKey, string $publicKey, ConfigRepository $configRepository)
     {
-        $this->privateKey = $privateKey;
-        $this->publicKey  = $publicKey;
-        $this->passPhrase = $passPhrase;
+        $this->privateKey       = $privateKey;
+        $this->publicKey        = $publicKey;
+        $this->configRepository = $configRepository;
     }
 
     /**
@@ -52,13 +53,13 @@ class LcobucciJWTTokensService implements JWTTokensService
     public function getFreshTokenFor(string $uuid, string $tokenName): JWTToken
     {
         $tokenBuilder = (new Builder(new JoseEncoder(), ChainedFormatter::default()));
-        $signingKey   = InMemory::file($this->privateKey, $this->passPhrase);
+        $signingKey   = InMemory::file($this->privateKey, $this->configRepository->get('jwt.pass_phrase'));
         $algorithm    = new Sha256();
         $now          = new DateTimeImmutable();
-        $validFor     = config(sprintf('jwt.%s_expiry', $tokenName));
+        $validFor     = $this->configRepository->get(sprintf('jwt.%s_expiry', $tokenName));
 
-        $token = $tokenBuilder->issuedBy(config('app.url'))
-            ->permittedFor(config('app.url'))
+        $token = $tokenBuilder->issuedBy($this->configRepository->get('app.url'))
+            ->permittedFor($this->configRepository->get('app.url'))
             ->relatedTo($tokenName)
             ->issuedAt($now)
             ->expiresAt($now->modify(sprintf('+%s', $validFor)))
@@ -77,13 +78,14 @@ class LcobucciJWTTokensService implements JWTTokensService
     public function parse(string $jwtToken, string $tokenName): ?JWTToken
     {
         $configuration = $this->getConfigurations();
-        $parsed        = $configuration->parser()->parse($jwtToken);
-        $token         = new LcobucciJWTToken($parsed);
 
         try {
+            $parsed = $configuration->parser()->parse($jwtToken);
+            $token  = new LcobucciJWTToken($parsed);
+
             $constraints   = [
                 new SignedWith($configuration->signer(), $configuration->verificationKey()),
-                new IssuedBy(config('app.url')),
+                new IssuedBy($this->configRepository->get('app.url')),
                 new RelatedTo($tokenName),
             ];
 
