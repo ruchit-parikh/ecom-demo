@@ -16,9 +16,11 @@ As we are setting up environment through docker, you will need it installed.
 ### In order to test
 - To run tests you will need to setup test environment, run bash script `test.sh` to set it up and make sure to specify credentials on `.env.testing` if needed to be altered
 - You can run tests using command `php artisan test` after running `docker-compose exec workspace bash` (Enter in docker container if not)
+- You can run frontend unit tests using command `docker-compose run npm npm run test:unit`
 
 ### Other
 - In order to update with latest migrations and dependencies, run bash script `update.sh` and make sure to update relevant env files if needed
 - For developers, you can update relevant xdebug.ini, php-docker.ini and my.cnf for updating mounted ini files in docker as per your need
 - You can also run laravel pint, phpstan, and ide helper generator using their commands mentioned on their official docs
+- You can format using `docker-compose run npm npm run format` and for linting `docker-compose run npm npm run lint`
 - For api documents, you will need to refer `api.docs.json` in root folder's public/docs directory
