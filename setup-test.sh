@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+docker-compose exec workspace bash -c "composer install"
 docker-compose exec workspace bash -c "cp .env.testing.example .env.testing"
 docker-compose exec workspace bash -c "php artisan --env=testing key:generate"
 docker-compose exec workspace bash -c "php artisan --env=testing migrate:fresh --seed --force --ansi"
@@ -15,4 +16,3 @@ echo "RSA keys for jwt token generated successfully!"
 
 docker-compose exec workspace bash -c "php artisan --env=testing cache:clear"
 docker-compose exec workspace bash -c "php artisan --env=testing route:clear"
-

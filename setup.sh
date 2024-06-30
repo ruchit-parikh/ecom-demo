@@ -20,3 +20,4 @@ docker-compose exec workspace bash -c "php artisan route:clear"
 # This will be only needed if not setup
 docker-compose exec workspace bash -c "php artisan storage:link"
 docker-compose exec workspace bash -c "php artisan ide-helper:generate"
+

@@ -68,6 +68,17 @@ services:
         networks:
             - ecom-network
 
+    npm:
+        image: node:20-alpine
+        container_name: ecom-npm
+        user: node
+        volumes:
+            - ./frontend:/var/www/frontend
+        working_dir: /var/www/frontend
+        ports:
+            - "3000:3000"
+        command: "npm run dev"
+
 volumes:
     ecom-mysql-data:
     ecom-phpmyadmin-data:

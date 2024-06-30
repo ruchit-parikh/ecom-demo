@@ -9,7 +9,7 @@ As we are setting up environment through docker, you will need it installed.
 ### How to Setup
 
 - Clone this project from git
-- Run command `docker-compose up -d` to start server on linux. Your server will be started on `localhost:8000` and phpmyadmin on `localhost:8080` and for mail checking you can visit `localhost:8025`
+- Run command `docker-compose up -d` to start server on linux. Your backend server will be started on `localhost:8000` and phpmyadmin on `localhost:8080` and for mail checking you can visit `localhost:8025`. You can check frontend on `localhost:3000`
 - Run bash script `setup.sh` from root directory. On linux machine you can do it using `sh ./setup.sh` to setup and seed database and download dependencies
 - You need to run `docker-compose exec workspace bash` to get inside docker and then you need to run `php artisan queue:work` to start if mails are being sent using queue.
 
