@@ -19,11 +19,11 @@ class OrderStatus extends Model
 {
     use HasFactory;
 
-    const STATUS_OPEN            = 'open';
-    const STATUS_PENDING_PAYMENT = 'pending_payment';
-    const STATUS_PAID            = 'paid';
-    const STATUS_SHIPPED         = 'shipped';
-    const STATUS_CANCELLED       = 'cancelled';
+    public const STATUS_OPEN            = 'open';
+    public const STATUS_PENDING_PAYMENT = 'pending_payment';
+    public const STATUS_PAID            = 'paid';
+    public const STATUS_SHIPPED         = 'shipped';
+    public const STATUS_CANCELLED       = 'cancelled';
 
     protected static function boot()
     {

@@ -2,12 +2,12 @@
 
 namespace Database\Factories\EcomDemo\Orders\Entities;
 
+use Carbon\Carbon;
 use EcomDemo\Orders\Entities\Order;
 use EcomDemo\Orders\Entities\OrderStatus;
 use EcomDemo\Payments\Entities\Payment;
 use EcomDemo\Users\Entities\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Collection;
 
 /**
  * @extends Factory<Order>
@@ -20,26 +20,6 @@ class OrderFactory extends Factory
     protected $model = Order::class;
 
     /**
-     * @var array
-     */
-    protected $statuses = [];
-
-    public function __construct(
-        $count = null,
-        ?Collection $states = null,
-        ?Collection $has = null,
-        ?Collection $for = null,
-        ?Collection $afterMaking = null,
-        ?Collection $afterCreating = null,
-        $connection = null,
-        ?Collection $recycle = null
-    ) {
-        $this->statuses = OrderStatus::all();
-
-        parent::__construct($count, $states, $has, $for, $afterMaking, $afterCreating, $connection, $recycle);
-    }
-
-    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
@@ -47,9 +27,6 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         $amount = fake()->randomFloat(4, 1, 3000);
-
-        /** @var OrderStatus $status */
-        $status = fake()->randomElement($this->statuses);
 
         $products = [];
 
@@ -59,13 +36,40 @@ class OrderFactory extends Factory
 
         return [
             'user_id'         => User::factory(),
-            'order_status_id' => $status,
-            'payment_id'      => $status->isShipped() || $status->isPaid() ? Payment::factory() : null,
+            'order_status_id' => OrderStatus::factory(),
+            'payment_id'      => null,
             'products'        => $products,
             'address'         => ['billing' => fake()->address(), 'shipping' => fake()->address()],
             'delivery_fee'    => $amount > Order::FREE_DELIVERY_MIN_AMOUNT_ELIGIBLE ? 0 : Order::DELIVER_FEE,
             'amount'          => $amount,
-            'shipped_at'      => $status->isShipped() ? fake()->dateTime() : null,
+            'shipped_at'      => null,
         ];
+    }
+
+    /**
+     * Define a state to handle shipped/paid orders based on provided or random status.
+     *
+     * @return Factory
+     */
+    public function configure()
+    {
+        return $this->afterMaking(function (Order $order) {
+            $statusId = $order->getStatusId();
+
+            /** @var OrderStatus $status */
+            $status = OrderStatus::find($statusId);
+
+            if ($status->isShipped() || $status->isPaid()) {
+                $payment = Payment::factory()->create();
+
+                $order->setPaymentId($payment->getKey());
+            }
+
+            if ($status->isShipped()) {
+                $time = $this->faker->dateTime();
+
+                $order->setShippedAt(Carbon::parse($time));
+            }
+        });
     }
 }

@@ -12,12 +12,14 @@ use Str;
 /**
  * @property int $id
  * @property string $uuid
+ * @property int $order_status_id
  * @property string $status
  * @property float|null $delivery_fee
  * @property float $amount
  * @property array $address
  * @property array $products
- * @property Payment $payment
+ * @property int|null $payment_id
+ * @property Payment|null $payment
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $shipped_at
@@ -26,9 +28,9 @@ class Order extends Model
 {
     use HasFactory;
 
-    const FREE_DELIVERY_MIN_AMOUNT_ELIGIBLE = 1850;
+    public const FREE_DELIVERY_MIN_AMOUNT_ELIGIBLE = 1850;
 
-    const DELIVER_FEE = 15;
+    public const DELIVER_FEE = 15;
 
     /**
      * @var string[]
@@ -120,9 +122,9 @@ class Order extends Model
     }
 
     /**
-     * @return Payment
+     * @return Payment|null
      */
-    public function getPayment(): Payment
+    public function getPayment(): ?Payment
     {
         return $this->payment;
     }
@@ -133,5 +135,37 @@ class Order extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class, 'payment_id', 'id');
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusId(): int
+    {
+        return $this->order_status_id;
+    }
+
+    /**
+     * @param int|null $paymentId
+     *
+     * @return $this
+     */
+    public function setPaymentId(?int $paymentId = null): self
+    {
+        $this->payment_id = $paymentId;
+
+        return $this;
+    }
+
+    /**
+     * @param Carbon|null $time
+     *
+     * @return $this
+     */
+    public function setShippedAt(?Carbon $time = null): self
+    {
+        $this->shipped_at = $time;
+
+        return $this;
     }
 }

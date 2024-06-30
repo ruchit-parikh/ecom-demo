@@ -32,11 +32,11 @@ class OrdersTest extends AuthorizedTest
             $resources[] = [
                 'uuid'         => $order->getUuid(),
                 'status'       => $order->getStatus(),
-                'payment'      => [
+                'payment'      => $payment ? [
                     'uuid'    => $payment->getUuid(),
                     'type'    => $payment->getType(),
                     'details' => $payment->getDetails(),
-                ],
+                ] : null,
                 'products'     => $order->getProducts(),
                 'address'      => $order->getAddress(),
                 'delivery_fee' => $order->getDeliveryFeeFormatted(),
@@ -69,11 +69,11 @@ class OrdersTest extends AuthorizedTest
             $resources[] = [
                 'uuid'         => $order->getUuid(),
                 'status'       => $order->getStatus(),
-                'payment'      => [
+                'payment'      => $payment ? [
                     'uuid'    => $payment->getUuid(),
                     'type'    => $payment->getType(),
                     'details' => $payment->getDetails(),
-                ],
+                ] : null,
                 'products'     => $order->getProducts(),
                 'address'      => $order->getAddress(),
                 'delivery_fee' => $order->getDeliveryFeeFormatted(),
