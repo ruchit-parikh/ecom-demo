@@ -11,15 +11,22 @@ module.exports = {
   ],
   overrides: [
     {
-      files: [
-        'e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'
-      ],
-      'extends': [
-        'plugin:playwright/recommended'
-      ]
+      files: ['e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+      'extends': ['plugin:playwright/recommended']
     }
   ],
   parserOptions: {
-    ecmaVersion: 'latest'
-  }
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  rules: {
+    'vue/script-setup-uses-vars': 'error',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/consistent-type-imports': 'error',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+  },
 }
