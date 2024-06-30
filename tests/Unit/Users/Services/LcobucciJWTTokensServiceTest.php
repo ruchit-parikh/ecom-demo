@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit\Users\Services;
 
 use Dotenv\Dotenv;
