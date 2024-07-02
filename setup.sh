@@ -21,3 +21,5 @@ docker-compose exec workspace bash -c "php artisan route:clear"
 docker-compose exec workspace bash -c "php artisan storage:link"
 docker-compose exec workspace bash -c "php artisan ide-helper:generate"
 
+# Copy .env of vue js project
+docker-compose exec workspace bash -c "cp frontend/.env.example frontend/.env"
