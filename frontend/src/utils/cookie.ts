@@ -6,8 +6,8 @@
 export function setCookie(name: string, value: string, options: any = {}) {
   options = {
     path: '/',
-    ...options,
-  };
+    ...options
+  }
 
   if (options.expires instanceof Date) {
     options.expires = options.expires.toUTCString()
@@ -34,8 +34,8 @@ export function setCookie(name: string, value: string, options: any = {}) {
 export function getCookie(name: string): string | null {
   const matches = document.cookie.match(
     // Match if cookie name is decoded correctly in cookie
-    new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[]\\\/+^])/g, '\\$1') + '=([^;]*)'),
-  );
+    new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[]\\\/+^])/g, '\\$1') + '=([^;]*)')
+  )
   return matches ? decodeURIComponent(matches[1]) : null
 }
 

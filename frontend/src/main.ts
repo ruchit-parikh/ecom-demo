@@ -4,7 +4,7 @@ import router from './router'
 import { createPinia } from 'pinia'
 import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
-import eventBus from "@/plugins/eventBus"
+import eventBus from '@/plugins/eventBus'
 
 const app = createApp(App)
 

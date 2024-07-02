@@ -8,9 +8,20 @@
         </div>
 
         <div class="d-flex justify-space-between align-center">
-          <VBtn variant="outlined" color="#FFFFFF" class="mr-3" prepend-icon="mdi-cart" size="large">Cart</VBtn>
-          <VBtn variant="outlined" color="#FFFFFF" v-if="!isLoggedIn" size="large" @click="showLoginModal">Login</VBtn>
-          <VBtn variant="outlined" color="#FFFFFF" v-if="isLoggedIn" size="large" @click="logout">Logout</VBtn>
+          <VBtn variant="outlined" color="#FFFFFF" class="mr-3" prepend-icon="mdi-cart" size="large"
+            >Cart</VBtn
+          >
+          <VBtn
+            variant="outlined"
+            color="#FFFFFF"
+            v-if="!isLoggedIn"
+            size="large"
+            @click="showLoginModal"
+            >Login</VBtn
+          >
+          <VBtn variant="outlined" color="#FFFFFF" v-if="isLoggedIn" size="large" @click="logout"
+            >Logout</VBtn
+          >
         </div>
       </div>
     </VContainer>
@@ -18,29 +29,28 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue'
 import { VAppBar, VBtn, VContainer } from 'vuetify/components'
-import { useUserStore } from '@/stores/user';
-import auth from "@/services/auth";
-import eventBus from "@/plugins/eventBus";
+import { useUserStore } from '@/stores/user'
+import auth from '@/services/auth'
+import eventBus from '@/plugins/eventBus'
 
 export default defineComponent({
   name: 'Navbar',
-  components: {VAppBar, VBtn, VContainer},
+  components: { VAppBar, VBtn, VContainer },
   setup() {
-    const userStore = useUserStore();
+    const userStore = useUserStore()
 
     const showLoginModal = () => {
-      eventBus.emit('user-unauthorized');
+      eventBus.emit('user-unauthorized')
     }
 
     const logout = () => {
-      return auth.logout()
-        .then(r => {
-          userStore.setUser(null)
+      return auth.logout().then((r) => {
+        userStore.setUser(null)
 
-          return r;
-        })
+        return r
+      })
     }
 
     const isLoggedIn = computed(() => !!userStore.user)
@@ -50,6 +60,6 @@ export default defineComponent({
       logout,
       isLoggedIn
     }
-  },
-});
+  }
+})
 </script>

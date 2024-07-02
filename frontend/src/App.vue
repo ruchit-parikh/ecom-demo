@@ -6,17 +6,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue'
-import auth from "@/services/auth"
-import { useUserStore } from "@/stores/user"
-import PageLoader from "@/components/PageLoader.vue"
-import Layout from "@/layouts/Layout.vue"
-import eventBus from "@/plugins/eventBus";
-import LoginModal from "@/components/LoginModal.vue";
+import { defineComponent, onMounted, ref } from 'vue'
+import auth from '@/services/auth'
+import { useUserStore } from '@/stores/user'
+import PageLoader from '@/components/PageLoader.vue'
+import Layout from '@/layouts/Layout.vue'
+import eventBus from '@/plugins/eventBus'
+import LoginModal from '@/components/LoginModal.vue'
 
 export default defineComponent({
   name: 'App',
-  components: {LoginModal, PageLoader, Layout},
+  components: { LoginModal, PageLoader, Layout },
 
   setup() {
     const userStore = useUserStore()
@@ -24,21 +24,20 @@ export default defineComponent({
     const loading = ref(true)
 
     onMounted(() => {
-      auth.getCurUser()
-        .then(r => {
-          userStore.setUser(r)
+      auth.getCurUser().then((r) => {
+        userStore.setUser(r)
 
-          loading.value = false;
+        loading.value = false
 
-          return r;
-        })
+        return r
+      })
     })
 
     eventBus.on('user-unauthorized', () => {
       showLoginModal.value = true
-    });
+    })
 
-    return {loading, showLoginModal}
+    return { loading, showLoginModal }
   }
 })
 </script>

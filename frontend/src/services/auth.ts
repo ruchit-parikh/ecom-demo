@@ -1,18 +1,18 @@
-import api from "@/services/api"
-import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
-import eventBus from "@/plugins/eventBus";
-import ApiError from "@/services/errors/apiError";
+import api from '@/services/api'
+import { deleteCookie, getCookie, setCookie } from '@/utils/cookie'
+import eventBus from '@/plugins/eventBus'
+import type ApiError from '@/services/errors/apiError'
 
 /**
  * @param {ApiError} err
  */
 const triggerError = (err: ApiError) => {
   if (err.isUnAuthorized()) {
-    eventBus.emit('user-unauthorized');
+    eventBus.emit('user-unauthorized')
   }
 
   if (err.isForbidden(0)) {
-    eventBus.emit('user-forbidden');
+    eventBus.emit('user-forbidden')
   }
 }
 
@@ -24,38 +24,35 @@ const auth = {
    * @return {Promise<{ access_token: string; refresh_token: string }>}
    */
   login(email: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
-    return api.post('/user/login', {email: email, password: password})
-      .then((r) => {
-        const { access_token, refresh_token } = r.data;
+    return api.post('/user/login', { email: email, password: password }).then((r) => {
+      const { access_token, refresh_token } = r.data
 
-        setCookie('access_token', access_token, { secure: true, sameSite: 'strict' });
-        setCookie('refresh_token', refresh_token, { secure: true, sameSite: 'strict' });
+      setCookie('access_token', access_token, { secure: true, sameSite: 'strict' })
+      setCookie('refresh_token', refresh_token, { secure: true, sameSite: 'strict' })
 
-        return { access_token, refresh_token };
-      })
+      return { access_token, refresh_token }
+    })
   },
 
   /**
    * @return {Promise<any>}
    */
   logout(): Promise<any> {
-    return this.post('/user/logout')
-      .then(r => {
-        deleteCookie('access_token')
-        deleteCookie('refresh_token')
+    return this.post('/user/logout').then((r) => {
+      deleteCookie('access_token')
+      deleteCookie('refresh_token')
 
-        eventBus.emit('user-unauthorized');
+      eventBus.emit('user-unauthorized')
 
-        return r
-      })
+      return r
+    })
   },
 
   /**
-   * @return {Promise<any>>}
+   * @return {Promise<{string, string}>>}
    */
   getCurUser(): Promise<any> {
-    return this.get('/user')
-      .then (r => r.data)
+    return this.get('/user').then((r) => r.data)
   },
 
   /**
@@ -64,12 +61,13 @@ const auth = {
    *
    * @return {Promise<any>}
    */
-  get (path: string, query: Record<string, string> = {}): Promise<any> {
-    return api.get(path, query, {'Authorization': 'Bearer ' + getCookie('access_token')})
-      .catch(err => {
+  get(path: string, query: Record<string, string> = {}): Promise<any> {
+    return api
+      .get(path, query, { Authorization: 'Bearer ' + getCookie('access_token') })
+      .catch((err) => {
         triggerError(err)
 
-        return err;
+        return err
       })
   },
 
@@ -79,12 +77,13 @@ const auth = {
    *
    * @return {Promise<any>}
    */
-  post (path: string, body: Record<string, any> = {}): Promise<any> {
-    return api.post(path, body, {'Authorization': 'Bearer ' + getCookie('access_token')})
-      .catch(err => {
+  post(path: string, body: Record<string, any> = {}): Promise<any> {
+    return api
+      .post(path, body, { Authorization: 'Bearer ' + getCookie('access_token') })
+      .catch((err) => {
         triggerError(err)
 
-        return err;
+        return err
       })
   },
 
@@ -94,12 +93,13 @@ const auth = {
    *
    * @return {Promise<any>}
    */
-  put (path: string, body: Record<string, any> = {}): Promise<any> {
-    return api.put(path, body, {'Authorization': 'Bearer ' + getCookie('access_token')})
-      .catch(err => {
+  put(path: string, body: Record<string, any> = {}): Promise<any> {
+    return api
+      .put(path, body, { Authorization: 'Bearer ' + getCookie('access_token') })
+      .catch((err) => {
         triggerError(err)
 
-        return err;
+        return err
       })
   }
 }

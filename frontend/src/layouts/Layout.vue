@@ -16,5 +16,5 @@ import { VApp, VMain } from 'vuetify/components'
 export default defineComponent({
   name: 'Layout',
   components: { Navbar, VApp, VMain }
-});
+})
 </script>

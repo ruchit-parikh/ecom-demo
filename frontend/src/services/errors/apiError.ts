@@ -1,18 +1,18 @@
-const HTTP_UNAUTHORIZED = 401;
-const HTTP_FORBIDDEN = 403;
+const HTTP_UNAUTHORIZED = 401
+const HTTP_FORBIDDEN = 403
 
 export default class ApiError extends Error {
-  code: number;
+  code: number
 
   /**
    * @param {Number} code
    * @param {String} message
    */
   constructor(code: number, message: string) {
-    super(message);
+    super(message)
 
-    this.code = code;
-    this.name = "ApiError";
+    this.code = code
+    this.name = 'ApiError'
   }
 
   /**
