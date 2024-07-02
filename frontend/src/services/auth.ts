@@ -11,7 +11,7 @@ const triggerError = (err: ApiError) => {
     eventBus.emit('user-unauthorized')
   }
 
-  if (err.isForbidden(0)) {
+  if (err.isForbidden()) {
     eventBus.emit('user-forbidden')
   }
 }
