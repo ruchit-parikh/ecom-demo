@@ -1,7 +1,7 @@
 <template>
   <PageLoader v-if="loading" />
   <Layout v-else>
-    <LoginModal v-if="showLoginModal" />
+    <LoginModal />
   </Layout>
 </template>
 
@@ -11,7 +11,6 @@ import auth from '@/services/auth'
 import { useUserStore } from '@/stores/user'
 import PageLoader from '@/components/PageLoader.vue'
 import Layout from '@/layouts/Layout.vue'
-import eventBus from '@/plugins/eventBus'
 import LoginModal from '@/components/LoginModal.vue'
 
 export default defineComponent({
@@ -20,7 +19,6 @@ export default defineComponent({
 
   setup() {
     const userStore = useUserStore()
-    const showLoginModal = ref(false)
     const loading = ref(true)
 
     onMounted(() => {
@@ -33,11 +31,7 @@ export default defineComponent({
       })
     })
 
-    eventBus.on('user-unauthorized', () => {
-      showLoginModal.value = true
-    })
-
-    return { loading, showLoginModal }
+    return { loading }
   }
 })
 </script>

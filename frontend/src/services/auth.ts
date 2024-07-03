@@ -42,7 +42,7 @@ const auth = {
       deleteCookie('access_token')
       deleteCookie('refresh_token')
 
-      eventBus.emit('user-unauthorized')
+      eventBus.emit('user-loggedout')
 
       return r
     })

@@ -1,4 +1,3 @@
-import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import {
   VApp,
@@ -9,9 +8,13 @@ import {
   VContainer,
   VRow,
   VCol,
-  VProgressLinear
+  VDialog,
+  VForm,
+  VProgressLinear,
+  VTextField
 } from 'vuetify/components'
 import { Ripple } from 'vuetify/directives'
+import 'vuetify/styles';
 
 export default createVuetify({
   theme: {
@@ -20,6 +23,10 @@ export default createVuetify({
         colors: {
           primary: '#4ec690',
           secondary: '#FFFFFF'
+        },
+        variables: {
+          'theme-on-primary': '#FFFFFF',
+          'btn-height': '40px',
         }
       }
     }
@@ -33,7 +40,10 @@ export default createVuetify({
     VContainer,
     VRow,
     VCol,
-    VProgressLinear
+    VDialog,
+    VForm,
+    VProgressLinear,
+    VTextField,
   },
   directives: {
     Ripple

@@ -1,5 +1,5 @@
 <template>
-  <VAppBar :elevation="2" color="primary">
+  <VAppBar :elevation="2" height="80" color="primary">
     <VContainer>
       <div class="d-flex justify-space-between">
         <div class="d-flex align-center">
@@ -8,18 +8,17 @@
         </div>
 
         <div class="d-flex justify-space-between align-center">
-          <VBtn variant="outlined" color="#FFFFFF" class="mr-3" prepend-icon="mdi-cart" size="large"
+          <VBtn variant="outlined" class="mr-3" prepend-icon="mdi-cart" size="large"
             >Cart</VBtn
           >
           <VBtn
             variant="outlined"
-            color="#FFFFFF"
             v-if="!isLoggedIn"
             size="large"
             @click="showLoginModal"
             >Login</VBtn
           >
-          <VBtn variant="outlined" color="#FFFFFF" v-if="isLoggedIn" size="large" @click="logout"
+          <VBtn variant="outlined" v-if="isLoggedIn" size="large" @click="logout"
             >Logout</VBtn
           >
         </div>

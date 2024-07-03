@@ -22,7 +22,7 @@ const api = {
     headers: Record<string, any> = {}
   ): Promise<any> {
     return client.get(path, { params: query, headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.error)
+      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
     })
   },
 
@@ -39,7 +39,7 @@ const api = {
     headers: Record<string, any> = {}
   ): Promise<any> {
     return client.post(path, body, { headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.error)
+      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
     })
   },
 
@@ -56,7 +56,7 @@ const api = {
     headers: Record<string, any> = {}
   ): Promise<any> {
     return client.put(path, body, { headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.error)
+      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
     })
   }
 }
