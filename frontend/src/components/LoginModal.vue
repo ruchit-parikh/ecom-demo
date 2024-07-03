@@ -33,7 +33,10 @@ export default defineComponent({
     const password = ref('');
     const loading = ref(false);
 
-    const login = () => {
+    /**
+     * @return {Promise<any>}
+     */
+    const login = (): Promise<any> => {
       loading.value = true
 
       return auth.login(email.value.value, password.value.value)
