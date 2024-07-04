@@ -2,11 +2,11 @@ import api from '@/services/api'
 
 const files = {
   /**
-   * @param {String} uuid
+   * @param {string} uuid
    *
-   * @return {Promise<{String}>}
+   * @return {Promise<{string}>}
    */
-  getUrl(uuid: string): Promise<String> {
+  getUrl(uuid: string): Promise<string> {
     return api
       .get(`/file/${uuid}`, {}, {}, { responseType: 'blob' })
       .then((r) => URL.createObjectURL(r))

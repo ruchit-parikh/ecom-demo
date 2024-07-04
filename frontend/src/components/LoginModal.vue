@@ -100,7 +100,11 @@ export default defineComponent({
       loading.value = true
 
       return auth
-        .login(email.value.value, password.value.value, rememberMe.value ? rememberMe.value.value : false)
+        .login(
+          email.value.value,
+          password.value.value,
+          rememberMe.value ? rememberMe.value.value : false
+        )
         .then(() => {
           setTimeout(() => {
             if (dialog.value) {
