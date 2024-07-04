@@ -8,7 +8,7 @@ interface User {
   address: string
   phone_number: string
   is_marketing: boolean
-  avatar: Record<string, string>
+  avatar: string
   last_login_at: string
 }
 

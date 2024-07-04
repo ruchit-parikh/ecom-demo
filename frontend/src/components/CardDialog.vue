@@ -1,6 +1,6 @@
 <template>
-  <VDialog class="pa-4" max-width="600px" v-model="isOpened" @closed="closeDialog">
-    <VCard class="py-8">
+  <VDialog class="pa-3" max-width="600px" v-model="isOpened" @closed="closeDialog">
+    <VCard class="py-4 rounded-0">
       <VContainer>
         <VRow justify="center">
           <VCol cols="9">
@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import {VCard, VCol, VContainer, VDialog, VRow} from "vuetify/components";
+import { defineComponent, ref } from 'vue'
+import { VCard, VCol, VContainer, VDialog, VRow } from 'vuetify/components'
 
 export default defineComponent({
-  name: 'Dialog',
+  name: 'CardDialog',
   components: {
     VDialog,
     VCard,
@@ -26,21 +26,21 @@ export default defineComponent({
     VCol
   },
   setup() {
-    const isOpened = ref(false);
+    const isOpened = ref(false)
 
     const openDialog = () => {
-      isOpened.value = true;
-    };
+      isOpened.value = true
+    }
 
     const closeDialog = () => {
-      isOpened.value = false;
-    };
+      isOpened.value = false
+    }
 
     return {
       isOpened,
       openDialog,
       closeDialog
-    };
+    }
   }
-});
+})
 </script>

@@ -1,7 +1,6 @@
 <template>
-  <VTextField
+  <VCheckbox
     :label="placeholderText"
-    type="password"
     variant="outlined"
     :name="fieldName"
     v-model="value"
@@ -14,13 +13,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import type { UnwrapRef, Ref } from 'vue'
-import { VTextField } from 'vuetify/components'
+import { VCheckbox } from 'vuetify/components'
 import { useFormInput } from '@/components/forms/composiables/FormInput'
 
 export default defineComponent({
-  name: 'InputPassword',
+  name: 'InputCheckbox',
   components: {
-    VTextField
+    VCheckbox
   },
   props: {
     name: {
@@ -37,10 +36,10 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const defaults = useFormInput(props)
-    const value: Ref<UnwrapRef<string>> = ref('')
+    const value: Ref<UnwrapRef<Boolean>> = ref(false)
+    const params = useFormInput(props)
 
-    return { ...defaults, value }
+    return { ...params, value }
   }
 })
 </script>

@@ -12,6 +12,7 @@ import { useUserStore } from '@/stores/user'
 import PageLoader from '@/components/PageLoader.vue'
 import Layout from '@/layouts/Layout.vue'
 import LoginModal from '@/components/LoginModal.vue'
+import eventBus from '@/plugins/eventBus'
 
 export default defineComponent({
   name: 'App',
@@ -21,7 +22,7 @@ export default defineComponent({
     const userStore = useUserStore()
     const loading = ref(true)
 
-    onMounted(() => {
+    const refreshUser = () => {
       auth.getCurUser().then((r) => {
         userStore.setUser(r)
 
@@ -29,6 +30,14 @@ export default defineComponent({
 
         return r
       })
+    }
+
+    onMounted(() => {
+      refreshUser()
+    })
+
+    eventBus.on('user-loggedin', () => {
+      refreshUser()
     })
 
     return { loading }

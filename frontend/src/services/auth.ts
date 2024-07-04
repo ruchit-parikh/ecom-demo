@@ -20,17 +20,26 @@ const auth = {
   /**
    * @param {String} email
    * @param {String} password
+   * @param {Boolean} remember
    *
-   * @return {Promise<{ access_token: string; refresh_token: string }>}
+   * @return {Promise<{ token: string }>}
    */
-  login(email: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
+  login(email: string, password: string, remember: Boolean = false): Promise<{ token: string }> {
     return api.post('/user/login', { email: email, password: password }).then((r) => {
-      const { access_token, refresh_token } = r.data
+      const { token } = r.data
 
-      setCookie('access_token', access_token, { secure: true, sameSite: 'strict' })
-      setCookie('refresh_token', refresh_token, { secure: true, sameSite: 'strict' })
+      if (remember) {
+        const expiry = new Date()
+        expiry.setHours(expiry.getHours() + 24)
 
-      return { access_token, refresh_token }
+        setCookie('token', token, { secure: true, sameSite: 'strict', expires: expiry })
+      } else {
+        setCookie('token', token, { secure: true, sameSite: 'strict' })
+      }
+
+      eventBus.emit('user-loggedin')
+
+      return { token }
     })
   },
 
@@ -38,9 +47,9 @@ const auth = {
    * @return {Promise<any>}
    */
   logout(): Promise<any> {
-    return this.post('/user/logout').then((r) => {
-      deleteCookie('access_token')
-      deleteCookie('refresh_token')
+    // TODO: This shouldn't be a get request as we are not getting any thing from server and rather a put/post
+    return this.get('/user/logout').then((r) => {
+      deleteCookie('token')
 
       eventBus.emit('user-loggedout')
 
@@ -49,7 +58,7 @@ const auth = {
   },
 
   /**
-   * @return {Promise<{string, string}>>}
+   * @return {Promise<{string, string}>}
    */
   getCurUser(): Promise<any> {
     return this.get('/user').then((r) => r.data)
@@ -62,13 +71,11 @@ const auth = {
    * @return {Promise<any>}
    */
   get(path: string, query: Record<string, string> = {}): Promise<any> {
-    return api
-      .get(path, query, { Authorization: 'Bearer ' + getCookie('access_token') })
-      .catch((err) => {
-        triggerError(err)
+    return api.get(path, query, { Authorization: 'Bearer ' + getCookie('token') }).catch((err) => {
+      triggerError(err)
 
-        return err
-      })
+      return err
+    })
   },
 
   /**
@@ -78,13 +85,11 @@ const auth = {
    * @return {Promise<any>}
    */
   post(path: string, body: Record<string, any> = {}): Promise<any> {
-    return api
-      .post(path, body, { Authorization: 'Bearer ' + getCookie('access_token') })
-      .catch((err) => {
-        triggerError(err)
+    return api.post(path, body, { Authorization: 'Bearer ' + getCookie('token') }).catch((err) => {
+      triggerError(err)
 
-        return err
-      })
+      return err
+    })
   },
 
   /**
@@ -94,13 +99,11 @@ const auth = {
    * @return {Promise<any>}
    */
   put(path: string, body: Record<string, any> = {}): Promise<any> {
-    return api
-      .put(path, body, { Authorization: 'Bearer ' + getCookie('access_token') })
-      .catch((err) => {
-        triggerError(err)
+    return api.put(path, body, { Authorization: 'Bearer ' + getCookie('token') }).catch((err) => {
+      triggerError(err)
 
-        return err
-      })
+      return err
+    })
   }
 }
 

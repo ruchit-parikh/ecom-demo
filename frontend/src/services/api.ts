@@ -13,17 +13,25 @@ const api = {
    * @param {String} path
    * @param {Record<string, string>} query
    * @param {Record<string, any>} headers
+   * @param {Record<string, any>} addons
    *
    * @return {Promise<any>}
    */
   get(
     path: string,
     query: Record<string, string> = {},
-    headers: Record<string, any> = {}
+    headers: Record<string, any> = {},
+    addons: Record<string, any> = {}
   ): Promise<any> {
-    return client.get(path, { params: query, headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
-    })
+    return client
+      .get(path, { params: query, headers: headers, ...addons })
+      .then((r) => r.data)
+      .catch((err) => {
+        throw new ApiError(
+          err.response.status,
+          err.response.data.message ? err.response.data.message : err.response.data.error
+        )
+      })
   },
 
   /**
@@ -38,9 +46,15 @@ const api = {
     body: Record<string, any> = {},
     headers: Record<string, any> = {}
   ): Promise<any> {
-    return client.post(path, body, { headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
-    })
+    return client
+      .post(path, body, { headers: headers })
+      .then((r) => r.data)
+      .catch((err) => {
+        throw new ApiError(
+          err.response.status,
+          err.response.data.message ? err.response.data.message : err.response.data.error
+        )
+      })
   },
 
   /**
@@ -55,9 +69,15 @@ const api = {
     body: Record<string, any> = {},
     headers: Record<string, any> = {}
   ): Promise<any> {
-    return client.put(path, body, { headers: headers }).catch((err) => {
-      throw new ApiError(err.response.status, err.response.data.message ? err.response.data.message : err.response.data.error)
-    })
+    return client
+      .put(path, body, { headers: headers })
+      .then((r) => r.data)
+      .catch((err) => {
+        throw new ApiError(
+          err.response.status,
+          err.response.data.message ? err.response.data.message : err.response.data.error
+        )
+      })
   }
 }
 

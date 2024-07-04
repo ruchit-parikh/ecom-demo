@@ -11,10 +11,13 @@ import {
   VDialog,
   VForm,
   VProgressLinear,
-  VTextField
+  VTextField,
+  VIcon,
+  VAvatar,
+  VImg
 } from 'vuetify/components'
 import { Ripple } from 'vuetify/directives'
-import 'vuetify/styles';
+import 'vuetify/styles'
 
 export default createVuetify({
   theme: {
@@ -26,7 +29,7 @@ export default createVuetify({
         },
         variables: {
           'theme-on-primary': '#FFFFFF',
-          'btn-height': '40px',
+          'btn-height': '50px'
         }
       }
     }
@@ -44,6 +47,9 @@ export default createVuetify({
     VForm,
     VProgressLinear,
     VTextField,
+    VIcon,
+    VAvatar,
+    VImg
   },
   directives: {
     Ripple

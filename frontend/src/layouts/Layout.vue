@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue'
 import Navbar from '@/layouts/components/Navbar.vue'
 import { VApp, VMain } from 'vuetify/components'
-import {RouterView} from "vue-router";
+import { RouterView } from 'vue-router'
 
 export default defineComponent({
   name: 'Layout',
