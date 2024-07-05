@@ -1,9 +1,9 @@
 /**
- * @param {String} v
+ * @param {any} v
  *
  * @return {Boolean}
  */
-export const required = (v: string) => !!v || 'This field is required'
+export const required = (v: any) => !!v || 'This field is required'
 
 /**
  * @param {String} v

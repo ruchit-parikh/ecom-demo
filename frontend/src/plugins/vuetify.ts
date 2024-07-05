@@ -14,7 +14,12 @@ import {
   VTextField,
   VIcon,
   VAvatar,
-  VImg
+  VImg,
+  VDataTableServer,
+  VToolbar,
+  VToolbarTitle,
+  VDivider,
+  VSpacer
 } from 'vuetify/components'
 import { Ripple } from 'vuetify/directives'
 import 'vuetify/styles'
@@ -49,7 +54,12 @@ export default createVuetify({
     VTextField,
     VIcon,
     VAvatar,
-    VImg
+    VImg,
+    VDataTableServer,
+    VToolbar,
+    VToolbarTitle,
+    VDivider,
+    VSpacer
   },
   directives: {
     Ripple

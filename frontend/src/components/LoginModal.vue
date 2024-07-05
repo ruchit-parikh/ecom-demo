@@ -66,6 +66,7 @@ import * as rules from '@/utils/rules'
 import InputCheckbox from '@/components/forms/InputCheckbox.vue'
 import { RouterLink } from 'vue-router'
 import { VRow, VCol, VBtn, VIcon } from 'vuetify/components'
+import router from '@/router'
 
 export default defineComponent({
   name: 'LoginModal',
@@ -106,11 +107,11 @@ export default defineComponent({
           rememberMe.value ? rememberMe.value.value : false
         )
         .then(() => {
-          setTimeout(() => {
-            if (dialog.value) {
-              dialog.value.closeDialog()
-            }
-          }, 2000)
+          if (dialog.value) {
+            dialog.value.closeDialog()
+          }
+
+          router.push('/orders')
         })
         .catch((err) => {
           error.value = err.message

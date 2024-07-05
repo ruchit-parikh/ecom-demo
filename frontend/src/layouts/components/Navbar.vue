@@ -37,6 +37,7 @@ import { useUserStore } from '@/stores/user'
 import auth from '@/services/auth'
 import eventBus from '@/plugins/eventBus'
 import files from '@/services/files'
+import router from '@/router'
 
 export default defineComponent({
   name: 'Navbar',
@@ -51,6 +52,7 @@ export default defineComponent({
     const logout = () => {
       return auth.logout().then((r) => {
         userStore.setUser(null)
+        router.push('/')
 
         return r
       })

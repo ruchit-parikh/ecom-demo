@@ -66,11 +66,11 @@ const auth = {
 
   /**
    * @param {String} path
-   * @param {Record<string, string>} query
+   * @param {Record<string, any>} query
    *
    * @return {Promise<any>}
    */
-  get(path: string, query: Record<string, string> = {}): Promise<any> {
+  get(path: string, query: Record<string, any> = {}): Promise<any> {
     return api.get(path, query, { Authorization: 'Bearer ' + getCookie('token') }).catch((err) => {
       triggerError(err)
 

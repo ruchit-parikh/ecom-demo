@@ -15,7 +15,7 @@
 import { defineComponent, ref } from 'vue'
 import type { UnwrapRef, Ref } from 'vue'
 import { VTextField } from 'vuetify/components'
-import { useFormInput } from '@/components/forms/composiables/FormInput'
+import { useFormInput } from '@/components/forms/composables/FormInput'
 
 export default defineComponent({
   name: 'InputPassword',
