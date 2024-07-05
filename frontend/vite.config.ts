@@ -22,6 +22,15 @@ export default defineConfig({
     vueDevTools(),
     vuetify(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    server: {
+      deps: {
+        inline: ['vuetify'],
+      },
+    },
+  },
   optimizeDeps: {
     include: [
       'vue',
