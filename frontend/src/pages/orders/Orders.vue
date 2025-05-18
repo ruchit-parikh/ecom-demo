@@ -30,11 +30,11 @@
           </template>
 
           <template v-slot:[`item.amount`]="{ item }">
-            {{ formatCurrency(item.amount) }}
+            {{ item.amount }}
           </template>
 
           <template v-slot:[`item.delivery_fee`]="{ item }">
-            {{ formatCurrency(item.delivery_fee) }}
+            {{ item.delivery_fee }}
           </template>
 
           <template v-slot:[`item.payment`]="{ item }">
@@ -104,10 +104,10 @@ export default defineComponent({
     const headers = [
       { title: 'Order Amount', value: 'amount', sortable: true },
       { title: 'Delivery Fee', value: 'delivery_fee', sortable: true },
-      { title: 'Created At', value: 'created_at', sortable: true },
+      { title: 'Created At', value: 'placed_at', sortable: true },
       { title: 'Shipped At', value: 'shipped_at', sortable: true },
       { title: 'Payment', value: 'payment' },
-      { title: 'Status', value: 'order_status', sortable: true }
+      { title: 'Status', value: 'status', sortable: true }
     ]
 
     /**
@@ -151,7 +151,7 @@ export default defineComponent({
       ordersService
         .getUserOrders(page, limit, sortBy, desc)
         .then((r) => {
-          total.value = r.total
+          total.value = r.meta.total
           orders.value = r.data
 
           return r
@@ -169,8 +169,8 @@ export default defineComponent({
       orders,
       isLoading,
       refreshOrders,
-      formatCurrency,
-      formatDate
+      formatDate,
+      formatCurrency
     }
   }
 })

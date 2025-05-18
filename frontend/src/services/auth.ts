@@ -26,7 +26,7 @@ const auth = {
    */
   login(email: string, password: string, remember: Boolean = false): Promise<{ token: string }> {
     return api.post('/user/login', { email: email, password: password }).then((r) => {
-      const { token } = r.data
+      const token  = r.access_token
 
       if (remember) {
         const expiry = new Date()

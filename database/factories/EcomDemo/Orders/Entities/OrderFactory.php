@@ -31,7 +31,7 @@ class OrderFactory extends Factory
         $products = [];
 
         foreach (range(0, rand(1, 10)) as $count) {
-            $products[] = ['product' => fake()->uuid(), 'quantity' => fake()->numberBetween(0, 10)];
+            $products[] = ['product' => fake()->uuid(), 'quantity' => fake()->numberBetween(0, 10), 'price' => fake()->numberBetween(0, 10)];
         }
 
         return [

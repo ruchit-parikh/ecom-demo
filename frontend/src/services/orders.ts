@@ -15,7 +15,7 @@ const orders = {
     sortBy: string = 'created_at',
     desc: Boolean = false
   ): Promise<any> {
-    return auth.get(`/orders`, { page: page, limit: limit, sortBy: sortBy, desc: desc })
+    return auth.get(`/user/orders`, { page: page, limit: limit, sortBy: sortBy, desc: desc })
   }
 }
 
